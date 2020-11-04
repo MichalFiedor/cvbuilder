@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>cvbuilder</name>
     <description>CV builder for developers</description>
-
+    <packaging>war</packaging>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -48,6 +48,15 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
