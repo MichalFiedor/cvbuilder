@@ -134,5 +134,6 @@
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-annotations-api:9.0.39" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.39" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.eclipse.jdt:ecj:3.18.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:20.1.0" level="project" />
   </component>
 </module>

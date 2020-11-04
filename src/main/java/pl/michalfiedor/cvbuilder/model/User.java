@@ -14,6 +14,9 @@ public class User {
     private long id;
     private String userName;
     private String password;
+    private String userEmail;
+    private String userPhoneNumber;
+    private String userCity;
     @OneToOne
     private Cv cv;
 }
