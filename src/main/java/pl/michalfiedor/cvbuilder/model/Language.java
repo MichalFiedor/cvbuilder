@@ -11,9 +11,9 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-public class Experience {
+public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String experience;
+    private String language;
 }
