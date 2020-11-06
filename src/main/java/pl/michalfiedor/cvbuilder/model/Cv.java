@@ -20,7 +20,7 @@ public class Cv {
     private List<Experience> experiences;
     @ManyToMany
     @JoinTable(name = "educationId_CvId")
-    private List<Education> educations;
+    private List<University> universities;
     @ManyToMany
     @JoinTable(name = "itToolId_CvId")
     private List<itTool> itTools;

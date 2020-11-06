@@ -13,11 +13,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String login;
-    private String userName;
+    private String firstName;
+    private String lastName;
     private String password;
-    private String userEmail;
-    private String userPhoneNumber;
-    private String userCity;
+    private String email;
+    private String phoneNumber;
+    @OneToOne
+    private City city;
     @OneToOne
     private Cv cv;
 }

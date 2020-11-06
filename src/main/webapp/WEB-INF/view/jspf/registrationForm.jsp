@@ -23,15 +23,15 @@
                            action="/registration" modelAttribute="user">
                     <div class="form-group">
                         <label for="login"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="text" name="login" id="login" placeholder="Login" path="login"/>
+                        <form:input type="text" id="login" placeholder="Login" path="login"/>
                     </div>
                     <div class="form-group">
                         <label for="email"><i class="zmdi zmdi-email"></i></label>
-                        <form:input type="email" name="email" id="email" placeholder="Your Email"  path="userEmail"/>
+                        <form:input type="email" id="email" placeholder="Your Email"  path="email"/>
                     </div>
                     <div class="form-group">
                         <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                        <form:input type="password" name="password" id="pass" placeholder="Password" path="password"/>
+                        <form:input type="password" id="pass" placeholder="Password" path="password"/>
                     </div>
 
 <%--                    <div class="form-group">--%>
