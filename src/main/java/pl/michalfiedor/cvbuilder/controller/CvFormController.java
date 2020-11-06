@@ -1,0 +1,13 @@
+package pl.michalfiedor.cvbuilder.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class CvFormController {
+
+    @GetMapping("/form1")
+    public String showFormFirsPage(){
+        return "firstPageCvForm";
+    }
+}
