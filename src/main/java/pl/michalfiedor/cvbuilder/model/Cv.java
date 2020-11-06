@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +18,7 @@ public class Cv {
     @JoinColumn(name = "experience_id")
     private List<Experience> experiences;
     @ManyToMany
-    @JoinTable(name = "educationId_CvId")
+    @JoinTable(name = "univeristyId_CvId")
     private List<University> universities;
     @ManyToMany
     @JoinTable(name = "itToolId_CvId")

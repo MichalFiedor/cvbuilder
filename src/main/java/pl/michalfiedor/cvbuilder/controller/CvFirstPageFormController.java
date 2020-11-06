@@ -27,7 +27,6 @@ public class CvFirstPageFormController {
     }
 
     @PostMapping("/form1")
-    @ResponseBody
     public String updateUserEntityWithDataFromFirstPageForm(@ModelAttribute User user, HttpSession session){
         User userFromSession = (User) session.getAttribute("user");
 
@@ -49,11 +48,4 @@ public class CvFirstPageFormController {
     public List<City> getCitiesList(){
         return cityRepository.findAll();
     }
-
-
-    @GetMapping("/form2")
-    public String showFormSecondPage(){
-        return "secondPageCvForm";
-    }
-
 }
