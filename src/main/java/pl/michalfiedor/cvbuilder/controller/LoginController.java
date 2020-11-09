@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
 
+import javax.servlet.http.HttpSession;
 import javax.xml.validation.Validator;
 
 @Controller
@@ -18,16 +19,17 @@ public class LoginController {
     private final UserRepository userRepository;
 
     @GetMapping("/login")
-    public String showLoginPage(Model model){
-        model.addAttribute("user", new User());
+    public String showLoginPage(){
         return "loginPage";
     }
 
     @PostMapping("/log")
-    public String logProcess(@RequestParam String login, @RequestParam String password, Model model){
+    public String logProcess(@RequestParam String login, @RequestParam String password, Model model, HttpSession session){
         User user = userRepository.findUserByLoginAndPassword(login, password);
         if(user!=null){
-            model.addAttribute("user", user);
+            session.setAttribute("id", user.getId());
+            //dlaczego jak zmienie user na inna nazwę (np mail) to nie czyta mi wtedy w jsp tego atrybutu
+            model.addAttribute("user", user.getEmail());
             if(user.getCv()!=null) {
                 return "redirect:dashboard";
             }else{

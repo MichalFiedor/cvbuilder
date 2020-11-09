@@ -5,41 +5,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
+import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CityRepository;
+import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
+import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class CvFirstPageFormController {
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
+    private final CvRepository cvRepository;
 
     @GetMapping("/form1")
     public String showFormFirsPage(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("cv", new Cv());
         return "firstPageCvForm";
     }
 
     @PostMapping("/form1")
-    public String updateUserEntityWithDataFromFirstPageForm(@ModelAttribute User user, HttpSession session){
-        User userFromSession = (User) session.getAttribute("user");
-
-        if(userFromSession!=null) {
-            User userToUpdate = userRepository.findById(userFromSession.getId()).orElseThrow(
-                    () -> new RuntimeException("User doesn't exist"));
-            userToUpdate.setFirstName(user.getFirstName());
-            userToUpdate.setLastName(user.getLastName());
-            userToUpdate.setPhoneNumber(user.getPhoneNumber());
-            userToUpdate.setCity(user.getCity());
-            userRepository.save(userToUpdate);
-        } else {
-            throw new RuntimeException("Session without actual logged user");
+    public String handleFirstPageForm(@ModelAttribute Cv cv, HttpSession session){
+        User user = UserGetter.getUserFromSession(session, userRepository);
+        if(user!=null && cv!=null) {
+            cvRepository.save(cv);
+            user.setCv(cv);
+            userRepository.save(user);
         }
         return "redirect:form2";
     }

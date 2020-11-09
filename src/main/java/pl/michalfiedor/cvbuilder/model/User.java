@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
@@ -13,13 +14,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String login;
-    private String firstName;
-    private String lastName;
     private String password;
     private String email;
-    private String phoneNumber;
-    @OneToOne
-    private City city;
     @OneToOne
     private Cv cv;
 }

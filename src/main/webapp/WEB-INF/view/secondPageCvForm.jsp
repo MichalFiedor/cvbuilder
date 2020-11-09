@@ -23,31 +23,18 @@
         <div class="signup-content">
             <div class="signup-form">
                 <h2 class="form-title">Infill your basic data</h2>
-                <form:form method="POST" class="register-form" id="register-form" action="/form1"
-                    modelAttribute="user">
+                <form:form method="POST" class="register-form" id="register-form" action="/form2"
+                    modelAttribute="cv">
                     <div class="form-group">
-                        <label for="firstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="text" id="firstName" placeholder="First Name" path="firstName"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="text" id="lastName" placeholder="Last Name" path="lastName"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumber"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:select itemValue="id" itemLabel="name" id="city"
-                                     path="city.id" items="${cities}"/>
-                    </div>
+                        <label for="aboutMe"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                        <form:textarea id="aboutMe" placeholder="About me" path="aboutMe" rows="20" cols="40"/>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>
                     </div>
                 </form:form>
             </div>
         </div>
+    </div>
     </div>
 </section>
     <%@ include file="jspf/footer.jsp"%>

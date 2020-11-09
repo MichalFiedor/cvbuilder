@@ -14,6 +14,12 @@ public class Cv {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String aboutMe;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    @OneToOne
+    private City city;
     @OneToMany
     @JoinColumn(name = "experience_id")
     private List<Experience> experiences;

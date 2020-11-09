@@ -24,7 +24,7 @@
             <div class="signup-form">
                 <h2 class="form-title">Infill your basic data</h2>
                 <form:form method="POST" class="register-form" id="register-form" action="/form1"
-                    modelAttribute="user">
+                    modelAttribute="cv">
                     <div class="form-group">
                         <label for="firstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="firstName" placeholder="First Name" path="firstName"/>
@@ -35,9 +35,14 @@
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber"/>
+                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"/>
                     </div>
                     <div class="form-group">
+                        <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                        <form:input type="email" id="email" path="email" value="${user}"/>
+                    </div>
+                    <div class="form-group">
+                        <p>City</p>
                         <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:select itemValue="id" itemLabel="name" id="city"
                                      path="city.id" items="${cities}"/>
@@ -46,6 +51,8 @@
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>
                     </div>
                 </form:form>
+
+
             </div>
         </div>
     </div>
