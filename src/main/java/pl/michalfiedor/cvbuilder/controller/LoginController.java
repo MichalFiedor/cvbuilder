@@ -33,7 +33,7 @@ public class LoginController {
             if(user.getCv()!=null) {
                 return "redirect:dashboard";
             }else{
-                return "redirect:form1";
+                return "redirect:basicdata/show";
             }
         }
         return "redirect:login";

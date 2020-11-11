@@ -17,18 +17,19 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class CvFirstPageFormController {
+@RequestMapping("/basicdata")
+public class BasicDataController {
     private final CityRepository cityRepository;
     private final UserRepository userRepository;
     private final CvRepository cvRepository;
 
-    @GetMapping("/form1")
+    @GetMapping("/show")
     public String showFormFirsPage(Model model){
         model.addAttribute("cv", new Cv());
-        return "firstPageCvForm";
+        return "basicDataForm";
     }
 
-    @PostMapping("/form1")
+    @PostMapping("/add")
     public String handleFirstPageForm(@ModelAttribute Cv cv, HttpSession session){
         User user = UserGetter.getUserFromSession(session, userRepository);
         if(user!=null && cv!=null) {
@@ -36,7 +37,7 @@ public class CvFirstPageFormController {
             user.setCv(cv);
             userRepository.save(user);
         }
-        return "redirect:form2";
+        return "redirect:/aboutme/show";
     }
 
     @ModelAttribute("cities")

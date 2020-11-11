@@ -21,7 +21,7 @@ public class Cv {
     @OneToOne
     private City city;
     @OneToMany
-    @JoinColumn(name = "experience_id")
+    @JoinColumn(name = "cv_id")
     private List<Experience> experiences;
     @ManyToMany
     @JoinTable(name = "univeristyId_CvId")
@@ -32,4 +32,8 @@ public class Cv {
     @ManyToMany
     @JoinTable(name = "languageId_CvId")
     private List<Language> languages;
+
+    public void addExperienceToCollection(Experience experience){
+        experiences.add(experience);
+    }
 }

@@ -23,7 +23,7 @@
         <div class="signup-content">
             <div class="signup-form">
                 <h2 class="form-title">Infill your basic data</h2>
-                <form:form method="POST" class="register-form" id="register-form" action="/form1"
+                <form:form method="POST" class="register-form" id="register-form" action="/basicdata/add"
                     modelAttribute="cv">
                     <div class="form-group">
                         <label for="firstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
@@ -42,7 +42,7 @@
                         <form:input type="email" id="email" path="email" value="${user}"/>
                     </div>
                     <div class="form-group">
-                        <p>City</p>
+                        <p>Choose City</p>
                         <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:select itemValue="id" itemLabel="name" id="city"
                                      path="city.id" items="${cities}"/>
