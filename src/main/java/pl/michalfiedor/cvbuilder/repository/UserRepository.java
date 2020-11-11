@@ -6,4 +6,5 @@ import pl.michalfiedor.cvbuilder.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findUserByLoginAndPassword(String login, String password);
 }
