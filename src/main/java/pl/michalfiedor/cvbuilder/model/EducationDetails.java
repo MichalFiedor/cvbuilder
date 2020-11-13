@@ -8,12 +8,15 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class University {
+public class EducationDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    private String start;
+    private String end;
+    private String degree;
+    @OneToOne
+    @JoinColumn(name = "university_id")
+    private University university;
+
 }

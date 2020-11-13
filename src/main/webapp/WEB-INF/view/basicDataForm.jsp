@@ -44,8 +44,10 @@
                     <div class="form-group">
                         <p>Choose City</p>
                         <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:select itemValue="id" itemLabel="name" id="city"
-                                     path="city.id" items="${cities}"/>
+                        <form:select id="city" path="city" >
+                            <form:option value="-" label="--Please Select"/>
+                            <form:options itemValue="id" itemLabel="name" items="${cities}"/>
+                        </form:select>
                     </div>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>

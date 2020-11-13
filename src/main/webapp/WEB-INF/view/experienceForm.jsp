@@ -73,12 +73,11 @@
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>
                     </div>
                 </form:form>
-                <form:form method="post" action="/form4/show">
-                    <div class="form-group form-button" style="float: right">
-                        <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>
-                    </div>
-                </form:form>
-
+                <div class="form-group form-button">
+                <form>
+                    <button formaction="/education/show">Next</button>
+                </form>
+                </div>
             </div>
         </div>
     </div>
