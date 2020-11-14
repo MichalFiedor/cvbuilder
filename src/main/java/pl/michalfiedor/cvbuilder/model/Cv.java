@@ -28,7 +28,7 @@ public class Cv {
     private List<EducationDetails> educationDetailsList;
     @ManyToMany
     @JoinTable(name = "itToolId_CvId")
-    private List<itTool> itTools;
+    private List<ItTool> itTools;
     @ManyToMany
     @JoinTable(name = "languageId_CvId")
     private List<Language> languages;

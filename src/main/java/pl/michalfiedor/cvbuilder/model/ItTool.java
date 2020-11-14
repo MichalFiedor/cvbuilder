@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class itTool {
+public class ItTool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
