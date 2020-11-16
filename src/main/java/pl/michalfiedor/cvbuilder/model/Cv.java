@@ -23,9 +23,9 @@ public class Cv {
     @OneToMany
     @JoinColumn(name = "cv_id")
     private List<Experience> experiences;
-    @ManyToMany
-    @JoinTable(name = "univeristyId_CvId")
-    private List<University> universities;
+    @OneToMany
+    @JoinColumn(name = "cv_id")
+    private List<EducationDetails> educationDetailsList;
     @ManyToMany
     @JoinTable(name = "itToolId_CvId")
     private List<itTool> itTools;
@@ -35,5 +35,9 @@ public class Cv {
 
     public void addExperienceToCollection(Experience experience){
         experiences.add(experience);
+    }
+
+    public void addEducationDetailToCollection(EducationDetails ud){
+        educationDetailsList.add(ud);
     }
 }

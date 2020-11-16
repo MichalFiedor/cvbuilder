@@ -32,7 +32,7 @@ public class ExperienceController {
     }
 
     @PostMapping("/add")
-    public String handleExperienceForm(@ModelAttribute Experience experience, HttpSession session, Model model){
+    public String handleExperienceForm(@ModelAttribute Experience experience, HttpSession session){
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(experience.getEnd().length()==0){
@@ -52,7 +52,7 @@ public class ExperienceController {
     }
 
     @PostMapping("/edit")
-    public String editExperience(@ModelAttribute Experience experience, Model model, HttpSession session){
+    public String editExperience(@ModelAttribute Experience experience){
         if(experienceRepository.existsById(experience.getId())){
             experienceRepository.save(experience);
         }
