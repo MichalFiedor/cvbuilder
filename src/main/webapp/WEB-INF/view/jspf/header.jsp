@@ -12,7 +12,7 @@
     <div id="logo">
         <div id="logo_text">
             <!-- class="logo_colour", allows you to change the colour of the text -->
-            <h1><a href="${pageContext.request.contextPath}">CV<span class="logo_colour">generator</span></a></h1>
+            <h1><a href="http://localhost:8080/login">CV<span class="logo_colour">generator</span></a></h1>
             <h2>Create your own CV</h2>
         </div>
     </div>

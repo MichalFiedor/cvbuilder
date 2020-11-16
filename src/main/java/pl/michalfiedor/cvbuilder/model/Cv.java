@@ -2,6 +2,7 @@ package pl.michalfiedor.cvbuilder.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +14,8 @@ public class Cv {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    //validator max 400 characters
+    @Column(length = 450)
     private String aboutMe;
     private String firstName;
     private String lastName;
@@ -28,7 +31,7 @@ public class Cv {
     private List<EducationDetails> educationDetailsList;
     @ManyToMany
     @JoinTable(name = "itToolId_CvId")
-    private List<itTool> itTools;
+    private List<ItTool> itTools;
     @ManyToMany
     @JoinTable(name = "languageId_CvId")
     private List<Language> languages;

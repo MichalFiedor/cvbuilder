@@ -39,7 +39,7 @@ public class EducationController {
 
     @PostMapping("/add")
     public String addEducation(@ModelAttribute EducationDetails educationDetails,
-                               HttpSession session, Model model){
+                               HttpSession session){
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(educationDetails.getEnd().length()==0){
@@ -48,6 +48,20 @@ public class EducationController {
         educationDetailsRepository.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
         cvRepository.save(userCv);
+        return "redirect:/education/show";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editFormEducation(@PathVariable long id, Model model){
+        EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
+        model.addAttribute("educationDetails", educationDetails);
+        return "experienceEditForm";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteEducation(@PathVariable long id){
+        EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
+        educationDetailsRepository.delete(educationDetails);
         return "redirect:/education/show";
     }
 

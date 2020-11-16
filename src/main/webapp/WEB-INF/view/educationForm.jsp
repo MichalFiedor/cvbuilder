@@ -39,8 +39,8 @@
                             <td>${education.degree}</td>
                             <td>${education.start}</td>
                             <td>${education.end}</td>
-                            <td><a href="<c:url value="/experience/edit/${education.id}"/>">Edit</a></td>
-                            <td><a href="<c:url value="/experience/delete/${education.id}"/>">Delete</a></td>
+                            <td><a href="<c:url value="/education/edit/${education.id}"/>">Edit</a></td>
+                            <td><a href="<c:url value="/education/delete/${education.id}"/>">Delete</a></td>
                         </tr>
                     </c:forEach>
                 </table>

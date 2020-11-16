@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.repository.UserRepository;
 
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @GetMapping("/registration")
     public String showIndexPage(Model model){
@@ -22,7 +22,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String userRegistration(@ModelAttribute User user){
-        userService.addUser(user);
+        userRepository.save(user);
         return "redirect:login";
     }
 }
