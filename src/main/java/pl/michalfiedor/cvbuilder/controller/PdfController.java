@@ -35,6 +35,8 @@ public class PdfController {
         pdfPrinter.addAboutMeToPdfSheet(cv, pdDocument, page);
         pdfPrinter.addBasicDataToPdfSheet(cv, pdDocument, page);
         pdfPrinter.addFirstAndLastNameToPdfSheet(cv, pdDocument, page);
+        pdfPrinter.addExperienceToPdfSheet(cv,pdDocument, page);
+        pdfPrinter.addEducationToPdfSheet(cv,pdDocument, page);
         pdDocument.save("test.pdf");
         pdDocument.close();
         return "PDF saved";

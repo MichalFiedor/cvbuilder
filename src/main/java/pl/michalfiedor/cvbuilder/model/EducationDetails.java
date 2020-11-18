@@ -14,6 +14,7 @@ public class EducationDetails {
     private long id;
     private String start;
     private String end;
+    @Column(length = 160)
     private String degree;
     @OneToOne
     @JoinColumn(name = "university_id")
