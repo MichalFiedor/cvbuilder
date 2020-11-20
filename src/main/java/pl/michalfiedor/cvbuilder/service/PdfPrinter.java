@@ -5,6 +5,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Text;
 import pl.michalfiedor.cvbuilder.model.Cv;
@@ -146,6 +147,20 @@ public class PdfPrinter {
                 contentStream.setLeading(14.5f);
             }
             contentStream.endText();
+            contentStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPhotoToPdfSheet(Cv cv, PDDocument pdDocument, PDPage page) {
+
+        PDPageContentStream contentStream = getContentStream(pdDocument, page);
+        String imgPath = cv.getImagePath();
+
+        try {
+            PDImageXObject pdImageXObject = PDImageXObject.createFromFile(imgPath, pdDocument);
+            contentStream.drawImage(pdImageXObject, 258, 735, 70, 90);
             contentStream.close();
         } catch (IOException e) {
             e.printStackTrace();

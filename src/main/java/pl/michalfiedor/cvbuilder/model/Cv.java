@@ -2,11 +2,8 @@ package pl.michalfiedor.cvbuilder.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 @Entity
@@ -16,7 +13,7 @@ public class Cv {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    //validator max 400 characters
+    //validator max 450 characters
     @Column(length = 450)
     private String aboutMe;
     private String firstName;
@@ -37,9 +34,8 @@ public class Cv {
     @ManyToMany
     @JoinTable(name = "languageId_CvId")
     private List<Language> languages;
-    @Lob
-    @Column(name="user_img", nullable=false, columnDefinition="mediumblob")
-    private byte[] image;
+    private String imagePath;
+    private String cvPath;
 
     public void addExperienceToCollection(Experience experience){
         experiences.add(experience);

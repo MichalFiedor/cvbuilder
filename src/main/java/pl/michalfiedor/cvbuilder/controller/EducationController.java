@@ -1,6 +1,7 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.xmpbox.type.BooleanType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class EducationController {
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
         getEducationList(session, model);
+        if(session.getAttribute("showNextButton")!=null){
+            model.addAttribute("showNextButton", true);
+        }
         return "educationForm";
     }
 
@@ -34,12 +38,14 @@ public class EducationController {
         model.addAttribute("educationDetails", new EducationDetails());
         model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
         getEducationList(session, model);
+        session.setAttribute("showNextButton", true);
+
         return "educationForm";
     }
 
     @PostMapping("/add")
     public String addEducation(@ModelAttribute EducationDetails educationDetails,
-                               HttpSession session){
+                               HttpSession session, Model model){
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(educationDetails.getEnd().length()==0){
@@ -48,6 +54,7 @@ public class EducationController {
         educationDetailsRepository.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
         cvRepository.save(userCv);
+
         return "redirect:/education/show";
     }
 

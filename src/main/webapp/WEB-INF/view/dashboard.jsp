@@ -7,7 +7,7 @@
 
 <body>
 <div id="main">
-    <h1>HERE WILL BE INFILLED CV DETAILS</h1>
+    <a href="${cvPath}">${cvPath}</a>
 </div>
     <%@ include file="jspf/footer.jsp"%>
 </div>
