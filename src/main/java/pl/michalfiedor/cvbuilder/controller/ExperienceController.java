@@ -28,6 +28,9 @@ public class ExperienceController {
     public String showExperienceFormPage(Model model, HttpSession session){
         model.addAttribute("experience", new Experience());
         getExperiencesList(session, model);
+        if(session.getAttribute("showNextButtonExperience")!=null){
+            model.addAttribute("showNextButtonExperience", true);
+        }
         return "experienceForm";
     }
 
@@ -41,6 +44,7 @@ public class ExperienceController {
         experienceRepository.save(experience);
         userCv.addExperienceToCollection(experience);
         cvRepository.save(userCv);
+        session.setAttribute("showNextButtonExperience", true);
         return "redirect:/experience/show";
     }
 

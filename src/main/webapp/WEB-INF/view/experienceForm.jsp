@@ -73,10 +73,11 @@
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>
                     </div>
                 </form:form>
-                <div class="form-group form-button">
-                <form>
-                    <button formaction="/education/show">Next</button>
-                </form>
+                <c:if test="${not empty showNextButtonExperience}">
+                    <form>
+                        <button formaction="/education/show">Next</button>
+                    </form>
+                </c:if>
                 </div>
             </div>
         </div>
