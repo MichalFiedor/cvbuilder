@@ -36,7 +36,7 @@ public class ExperienceController {
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(experience.getEnd().length()==0){
-            experience.setEnd("Still");
+            experience.setEnd("still");
         }
         experienceRepository.save(experience);
         userCv.addExperienceToCollection(experience);

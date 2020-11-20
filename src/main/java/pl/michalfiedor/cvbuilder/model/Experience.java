@@ -16,5 +16,6 @@ public class Experience {
     private String position;
     private String start;
     private String end;
+    @Column(length = 150)
     private String description;
 }

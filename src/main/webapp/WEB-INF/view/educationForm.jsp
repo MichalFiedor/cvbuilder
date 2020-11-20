@@ -95,6 +95,11 @@
                 </div>
                 </form:form>
                 </c:if>
+                <c:if test="${not empty showNextButton}">
+                    <form>
+                        <button formaction="/image/show">Next</button>
+                    </form>
+                </c:if>
             </div>
         </div>
     </div>
