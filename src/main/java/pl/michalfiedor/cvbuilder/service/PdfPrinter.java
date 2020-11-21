@@ -7,7 +7,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Text;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.EducationDetails;
 import pl.michalfiedor.cvbuilder.model.Experience;
@@ -157,10 +156,13 @@ public class PdfPrinter {
 
         PDPageContentStream contentStream = getContentStream(pdDocument, page);
         String imgPath = cv.getImagePath();
-
         try {
             PDImageXObject pdImageXObject = PDImageXObject.createFromFile(imgPath, pdDocument);
-            contentStream.drawImage(pdImageXObject, 258, 735, 70, 90);
+            float widthFactor = pdImageXObject.getWidth()/70f;
+            float heightFactor = pdImageXObject.getHeight()/90f;
+                    contentStream.drawImage(pdImageXObject, 258, 735,
+                            pdImageXObject.getWidth()/widthFactor  ,
+                            pdImageXObject.getHeight()/heightFactor );
             contentStream.close();
         } catch (IOException e) {
             e.printStackTrace();

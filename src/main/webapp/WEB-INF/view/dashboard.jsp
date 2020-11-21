@@ -7,7 +7,7 @@
 
 <body>
 <div id="main">
-    <a href="${cvPath}">Cv</a>
+    <a href="http://localhost:8080/pdf/get-file/${cvId}">Cv</a>
 </div>
     <%@ include file="jspf/footer.jsp"%>
 </div>

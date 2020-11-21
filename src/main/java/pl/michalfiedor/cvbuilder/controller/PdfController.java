@@ -1,16 +1,17 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.*;
+import org.apache.pdfbox.tools.PDFBox;
+import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
@@ -21,6 +22,7 @@ import pl.michalfiedor.cvbuilder.service.UserGetter;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,8 +57,21 @@ public class PdfController {
         pdfPrinter.addPhotoToPdfSheet(cv, pdDocument, page);
         pdDocument.save(filePath.toString());
         pdDocument.close();
-        model.addAttribute("cvPath", cv.getCvPath());
+        model.addAttribute("cvId", cv.getId());
         return "dashboard";
+    }
+
+    @GetMapping(
+            value = "/get-file/{id}",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
+
+    public @ResponseBody byte [] getFile(@PathVariable long id) throws IOException{
+        Cv cv = cvRepository.findById(id).orElseThrow();
+        InputStream inputStream= Files.class
+                .getResourceAsStream(cv.getCvPath());
+        return IOUtils.toByteArray(inputStream);
+
     }
 }
 
