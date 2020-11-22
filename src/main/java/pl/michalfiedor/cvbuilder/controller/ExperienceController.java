@@ -3,6 +3,7 @@ package pl.michalfiedor.cvbuilder.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
 import pl.michalfiedor.cvbuilder.model.Cv;
@@ -14,6 +15,7 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -28,11 +30,17 @@ public class ExperienceController {
     public String showExperienceFormPage(Model model, HttpSession session){
         model.addAttribute("experience", new Experience());
         getExperiencesList(session, model);
+        if(session.getAttribute("showNextButtonExperience")!=null){
+            model.addAttribute("showNextButtonExperience", true);
+        }
         return "experienceForm";
     }
 
     @PostMapping("/add")
-    public String handleExperienceForm(@ModelAttribute Experience experience, HttpSession session){
+    public String handleExperienceForm(@Valid Experience experience, BindingResult result, HttpSession session){
+        if(result.hasErrors()){
+            return "experienceForm";
+        }
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(experience.getEnd().length()==0){
@@ -41,6 +49,7 @@ public class ExperienceController {
         experienceRepository.save(experience);
         userCv.addExperienceToCollection(experience);
         cvRepository.save(userCv);
+        session.setAttribute("showNextButtonExperience", true);
         return "redirect:/experience/show";
     }
 
@@ -52,7 +61,10 @@ public class ExperienceController {
     }
 
     @PostMapping("/edit")
-    public String editExperience(@ModelAttribute Experience experience){
+    public String editExperience(@Valid Experience experience, BindingResult result){
+        if (result.hasErrors()){
+            return "experienceEditForm";
+        }
         if(experienceRepository.existsById(experience.getId())){
             experienceRepository.save(experience);
         }

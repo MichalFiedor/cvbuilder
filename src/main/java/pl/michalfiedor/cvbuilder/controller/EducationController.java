@@ -38,14 +38,14 @@ public class EducationController {
         model.addAttribute("educationDetails", new EducationDetails());
         model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
         getEducationList(session, model);
-        session.setAttribute("showNextButton", true);
+
 
         return "educationForm";
     }
 
     @PostMapping("/add")
     public String addEducation(@ModelAttribute EducationDetails educationDetails,
-                               HttpSession session, Model model){
+                               HttpSession session){
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(educationDetails.getEnd().length()==0){
@@ -54,7 +54,7 @@ public class EducationController {
         educationDetailsRepository.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
         cvRepository.save(userCv);
-
+        session.setAttribute("showNextButton", true);
         return "redirect:/education/show";
     }
 

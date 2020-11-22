@@ -1,16 +1,13 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.*;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
@@ -18,9 +15,9 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.PdfPrinter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,8 +52,20 @@ public class PdfController {
         pdfPrinter.addPhotoToPdfSheet(cv, pdDocument, page);
         pdDocument.save(filePath.toString());
         pdDocument.close();
-        model.addAttribute("cvPath", cv.getCvPath());
+        model.addAttribute("cvId", cv.getId());
         return "dashboard";
+    }
+
+    @GetMapping("/get-file/{id}")
+    public void getCvFile(@PathVariable long id, HttpServletResponse response){
+        Cv cv = cvRepository.findById(id).orElseThrow();
+        try{
+            InputStream in = new DataInputStream(new FileInputStream(cv.getCvPath()));
+            IOUtils.copy(in, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e){
+            throw new RuntimeException("Error writing file to output stream.");
+        }
     }
 }
 

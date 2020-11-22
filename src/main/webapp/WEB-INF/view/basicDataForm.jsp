@@ -28,24 +28,30 @@
                     <div class="form-group">
                         <label for="firstName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="firstName" placeholder="First Name" path="firstName"/>
+                        <form:errors path="firstName" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="lastName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="lastName" placeholder="Last Name" path="lastName"/>
+                        <form:errors path="lastName" cssClass="error"/>
+
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"/>
+                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber" />
+                        <form:errors path="phoneNumber" cssClass="error"/>
+
                     </div>
                     <div class="form-group">
                         <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="email" id="email" path="email" value="${user}"/>
+                        <form:errors path="email" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <p>Choose City</p>
                         <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:select id="city" path="city" >
-                            <form:option value="-" label="--Please Select"/>
+                            <form:option value="-" label="--Please Select--"/>
                             <form:options itemValue="id" itemLabel="name" items="${cities}"/>
                         </form:select>
                     </div>

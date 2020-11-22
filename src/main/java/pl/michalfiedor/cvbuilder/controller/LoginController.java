@@ -28,7 +28,6 @@ public class LoginController {
         User user = userRepository.findUserByLoginAndPassword(login, password);
         if(user!=null){
             session.setAttribute("id", user.getId());
-            //dlaczego jak zmienie user na inna nazwę (np mail) to nie czyta mi wtedy w jsp tego atrybutu
             model.addAttribute("user", user.getEmail());
             if(user.getCv()!=null) {
                 return "redirect:dashboard";
@@ -36,6 +35,7 @@ public class LoginController {
                 return "redirect:basicdata/show";
             }
         }
-        return "redirect:login";
+        model.addAttribute("message", true);
+        return "loginPage";
     }
 }
