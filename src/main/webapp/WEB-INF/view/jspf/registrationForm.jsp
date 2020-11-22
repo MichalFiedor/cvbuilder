@@ -24,10 +24,13 @@
                     <div class="form-group">
                         <label for="login"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="login" placeholder="Login" path="login"/>
+                        <form:errors path="login" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="email"><i class="zmdi zmdi-email"></i></label>
                         <form:input type="email" id="email" placeholder="Your Email"  path="email"/>
+                        <form:errors path="email" cssClass="error"/>
+
                     </div>
                     <div class="form-group">
                         <label for="pass"><i class="zmdi zmdi-lock"></i></label>
@@ -38,10 +41,6 @@
 <%--                        <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>--%>
 <%--                        <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>--%>
 <%--                    </div>--%>
-                    <div class="form-group">
-                        <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                        <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
-                    </div>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                     </div>

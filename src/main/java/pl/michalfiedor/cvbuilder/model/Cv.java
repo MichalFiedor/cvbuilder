@@ -2,8 +2,10 @@ package pl.michalfiedor.cvbuilder.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -13,12 +15,20 @@ public class Cv {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    //validator max 450 characters
     @Column(length = 450)
+//    @Range(min = 5, max = 450, message = "Text must have more than " +
+//            "5 and not more than 450 characters.")
+    @Min(5)
     private String aboutMe;
+    @NotBlank(message = "Incorrect value.")
+    @Size(min = 2, message = "Too short name")
     private String firstName;
+    @Size(min = 2, message = "To short last name.")
+    @NotBlank(message = "Incorrect value.")
     private String lastName;
+    @Email(message = "Enter correct email address.")
     private String email;
+    @Pattern(regexp = "[0-9]{3}-[0-9]{3}-[0-9]{3}", message = "Incorrect phone number.")
     private String phoneNumber;
     @OneToOne
     private City city;

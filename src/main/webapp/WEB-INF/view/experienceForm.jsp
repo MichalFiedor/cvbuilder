@@ -49,15 +49,18 @@
                     <div class="form-group">
                         <label for="companyName"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="companyName" placeholder="Company name" path="companyName"/>
+                        <form:errors path="companyName" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <label for="position"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="text" id="position" placeholder="Position" path="position"/>
+                        <form:errors path="position" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <p>Start date</p>
                         <label for="startDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="startDate" placeholder="Since" path="start"/>
+                        <form:errors path="start" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <p>End date (If still, leave empty)</p>
@@ -68,6 +71,7 @@
                         <label for="description"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:textarea id="description" rows="6" cols="40"
                                     placeholder="Describe your duties" path="description"/>
+                        <form:errors path="description" cssClass="error"/>
                     </div>
                     <div class="form-group form-button" style="float: left">
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>

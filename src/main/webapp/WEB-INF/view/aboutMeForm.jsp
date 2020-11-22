@@ -23,15 +23,17 @@
         <div class="signup-content">
             <div class="signup-form">
                 <h2 class="form-title">About you</h2>
-                <form method="POST" class="register-form" id="register-form" action="/aboutme/add">
+                <form:form method="POST" class="register-form" id="register-form" action="/aboutme/add"
+                modelAttribute="cv">
                     <div class="form-group">
                         <label for="aboutMe"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <textarea id="aboutMe" placeholder="About me" name="aboutMe" rows="6" cols="40"></textarea>
+                        <form:textarea id="aboutMe" placeholder="About me" name="aboutMe" rows="6" cols="40" path="aboutMe"></form:textarea>
+                        <form:errors path="aboutMe" cssClass="errors"/>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>
                     </div>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>

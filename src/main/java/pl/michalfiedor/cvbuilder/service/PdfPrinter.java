@@ -6,7 +6,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.davidmoten.text.utils.WordWrap;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Text;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.EducationDetails;
 import pl.michalfiedor.cvbuilder.model.Experience;
@@ -30,16 +32,14 @@ public class PdfPrinter {
     public void addAboutMeToPdfSheet(Cv cv, PDDocument pdDocument, PDPage page) {
 
         PDPageContentStream contentStream = getContentStream(pdDocument, page);
-
-        String aboutMe = cv.getAboutMe();
-        aboutMe = aboutMe.replace("\n", "").replace("\r", "");
+        String lines[]= TextService.splitStringByLine(cv.getAboutMe(), 50);
         try {
             contentStream.beginText();
-            contentStream.newLineAtOffset(56.7f, 600f);
+            contentStream.newLineAtOffset(56.7f, 610f);
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
             contentStream.setLeading(14.5f);
-            for (int i = 0; i < aboutMe.length(); i += 40) {
-                contentStream.showText(StringUtils.truncate(aboutMe, i, 40));
+            for (int i = 0; i < lines.length; i ++) {
+                contentStream.showText(lines[i]);
                 contentStream.newLine();
             }
             contentStream.endText();
@@ -59,9 +59,9 @@ public class PdfPrinter {
         try {
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
-            TextService.addSingleText(contentStream, phoneNumber, 107.2f, 688.5f);
-            TextService.addSingleText(contentStream, email, 135.2f, 0);
-            TextService.addSingleText(contentStream, city, 201.5f, 0);
+            PdfTextService.addSingleText(contentStream, phoneNumber, 107.2f, 688.5f);
+            PdfTextService.addSingleText(contentStream, email, 135.2f, 0);
+            PdfTextService.addSingleText(contentStream, city, 201.5f, 0);
             contentStream.endText();
             contentStream.close();
         } catch (IOException e) {
@@ -78,8 +78,8 @@ public class PdfPrinter {
         try {
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_ROMAN, 25);
-            TextService.addSingleText(contentStream, firstName, 220.1f, 712.4f);
-            TextService.addSingleText(contentStream, lastName, 80.3f, 0);
+            PdfTextService.addSingleText(contentStream, firstName, 220.1f, 712.4f);
+            PdfTextService.addSingleText(contentStream, lastName, 80.3f, 0);
             contentStream.endText();
             contentStream.close();
         } catch (IOException e) {
@@ -94,25 +94,25 @@ public class PdfPrinter {
 
         try {
             contentStream.beginText();
-            contentStream.newLineAtOffset(245.8f, 600f);
+            contentStream.newLineAtOffset(245.8f, 610f);
             for (Experience experience : experiences) {
-                String experienceDescription = experience.getDescription();
-                experienceDescription = experienceDescription.replace("\n", "").replace("\r", "");
+
+                String lines[] = TextService.splitStringByLine(experience.getDescription(), 85);
                 String workingPeriod = experience.getStart() + " - " + experience.getEnd();
-                TextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
+                PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
                         experience.getPosition());
-                TextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD_ITALIC, 9f, 10.5f,
+                PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD_ITALIC, 9f, 10.5f,
                         experience.getCompanyName());
-                TextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 14.5f,
+                PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 12.5f,
                         workingPeriod);
                 contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
 
-                for (int i = 0; i < experienceDescription.length(); i += 70) {
+                for (int i = 0; i < lines.length; i ++) {
                     contentStream.setLeading(10.5f);
-                    contentStream.showText(StringUtils.truncate(experienceDescription, i, 70));
+                    contentStream.showText(lines[i]);
                     contentStream.newLine();
                 }
-                contentStream.setLeading(14.5f);
+                contentStream.newLine();
             }
             contentStream.endText();
             contentStream.close();
@@ -130,20 +130,19 @@ public class PdfPrinter {
             contentStream.beginText();
             contentStream.newLineAtOffset(245.8f, 415f);
             for (EducationDetails educationDetails : educationDetailsList) {
-                String degree = educationDetails.getDegree();
-                degree = degree.replace("\n", "").replace("\r", "");
+                String lines[]=TextService.splitStringByLine(educationDetails.getDegree(), 85);
                 String studyPeriod = educationDetails.getStart() + " - " + educationDetails.getEnd();
-                TextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
+                PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
                         educationDetails.getUniversity().getName());
-                TextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 14.5f,
+                PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 12.5f,
                         studyPeriod);
                 contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
-                for (int i = 0; i < degree.length(); i += 70) {
+                for (int i = 0; i < lines.length; i++) {
                     contentStream.setLeading(10.5f);
-                    contentStream.showText(StringUtils.truncate(degree, i, 70));
+                    contentStream.showText(lines[i]);
                     contentStream.newLine();
                 }
-                contentStream.setLeading(14.5f);
+                contentStream.newLine();
             }
             contentStream.endText();
             contentStream.close();

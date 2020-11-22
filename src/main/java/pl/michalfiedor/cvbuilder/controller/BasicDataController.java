@@ -3,6 +3,7 @@ package pl.michalfiedor.cvbuilder.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
 import pl.michalfiedor.cvbuilder.model.Cv;
@@ -13,6 +14,7 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -30,7 +32,10 @@ public class BasicDataController {
     }
 
     @PostMapping("/add")
-    public String handleFirstPageForm(@ModelAttribute Cv cv, HttpSession session){
+    public String handleFirstPageForm(@Valid Cv cv, BindingResult result, HttpSession session){
+        if(result.hasErrors()){
+            return "basicDataForm";
+        }
         User user = UserGetter.getUserFromSession(session, userRepository);
         if(user!=null && cv!=null) {
             cvRepository.save(cv);

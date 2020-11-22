@@ -3,6 +3,7 @@ package pl.michalfiedor.cvbuilder.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
@@ -11,6 +12,7 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,10 +28,13 @@ public class AboutMeController {
     }
 
     @PostMapping("/add")
-    public String handleSecondPageForm(@RequestParam String aboutMe, HttpSession session){
+    public String handleSecondPageForm(@Valid Cv cv, BindingResult result, HttpSession session){
+        if(result.hasErrors()){
+            return "aboutMeForm";
+        }
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
-        userCv.setAboutMe(aboutMe);
+        userCv.setAboutMe(cv.getAboutMe());
         cvRepository.save(userCv);
         return "redirect:/experience/show";
     }

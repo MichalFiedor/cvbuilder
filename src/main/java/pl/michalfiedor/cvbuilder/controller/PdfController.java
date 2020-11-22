@@ -4,11 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.*;
-import org.apache.pdfbox.tools.PDFBox;
-import org.springframework.boot.web.servlet.server.Session;
-import org.springframework.http.MediaType;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +15,9 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.PdfPrinter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,17 +56,16 @@ public class PdfController {
         return "dashboard";
     }
 
-    @GetMapping(
-            value = "/get-file/{id}",
-            produces = MediaType.APPLICATION_PDF_VALUE
-    )
-
-    public @ResponseBody byte [] getFile(@PathVariable long id) throws IOException{
+    @GetMapping("/get-file/{id}")
+    public void getCvFile(@PathVariable long id, HttpServletResponse response){
         Cv cv = cvRepository.findById(id).orElseThrow();
-        InputStream inputStream= Files.class
-                .getResourceAsStream(cv.getCvPath());
-        return IOUtils.toByteArray(inputStream);
-
+        try{
+            InputStream in = new DataInputStream(new FileInputStream(cv.getCvPath()));
+            IOUtils.copy(in, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e){
+            throw new RuntimeException("Error writing file to output stream.");
+        }
     }
 }
 
