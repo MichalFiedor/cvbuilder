@@ -38,7 +38,7 @@ public class Cv {
             groups = BasicDataValidationGroup.class)
     private String phoneNumber;
     @OneToOne
-    @NotNull(groups = BasicDataValidationGroup.class)
+    @NotNull(message = "Choose your country", groups = BasicDataValidationGroup.class)
     private City city;
     @OneToMany
     @JoinColumn(name = "cv_id")

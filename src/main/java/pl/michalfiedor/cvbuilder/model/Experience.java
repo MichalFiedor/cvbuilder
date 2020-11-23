@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -16,15 +17,15 @@ public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank(message = "Incorrect value.")
+    @NotBlank(message = "Enter correct company name.")
     private String companyName;
-    @NotBlank(message = "Incorrect value")
+    @NotBlank(message = "Enter correct position name.")
     private String position;
-    @NotNull(message = "You must enter start date.")
+    @NotBlank(message = "You must enter start date.")
     private String start;
     private String end;
     @Column(length = 150)
-    @Range(min = 5, max = 150, message = "Text must have more than \" +\n" +
-            "            \"5, and not more than 150 characters")
+    @Size(min = 5, message = "Text must have more than 5 characters.")
+    @Size(max = 150, message = "Text must have no more than 150 characters")
     private String description;
 }

@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber" />
+                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number (000-000-000)" path="phoneNumber" />
                         <form:errors path="phoneNumber" cssClass="error"/>
 
                     </div>
