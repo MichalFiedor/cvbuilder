@@ -2,7 +2,8 @@ package pl.michalfiedor.cvbuilder.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
+import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
+import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -16,21 +17,28 @@ public class Cv {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(length = 450)
-//    @Range(min = 5, max = 450, message = "Text must have more than " +
-//            "5 and not more than 450 characters.")
-    @Min(5)
+    @Size(min = 5, groups = AboutMeValidationGroup.class,
+            message = "Text must have more than 5 characters.")
+    @Size(max = 450, groups = AboutMeValidationGroup.class,
+            message = "Text must have no more than 450 characters.")
     private String aboutMe;
-    @NotBlank(message = "Incorrect value.")
+    @NotBlank(message = "Incorrect value.",
+            groups = BasicDataValidationGroup.class)
     @Size(min = 2, message = "Too short name")
     private String firstName;
-    @Size(min = 2, message = "To short last name.")
+    @Size(min = 2, message = "To short last name.",
+            groups = BasicDataValidationGroup.class)
     @NotBlank(message = "Incorrect value.")
     private String lastName;
-    @Email(message = "Enter correct email address.")
+    @Email(message = "Enter correct email address.",
+            groups = BasicDataValidationGroup.class)
     private String email;
-    @Pattern(regexp = "[0-9]{3}-[0-9]{3}-[0-9]{3}", message = "Incorrect phone number.")
+    @Pattern(regexp = "[0-9]{3}-[0-9]{3}-[0-9]{3}",
+            message = "Incorrect phone number.",
+            groups = BasicDataValidationGroup.class)
     private String phoneNumber;
     @OneToOne
+    @NotNull(groups = BasicDataValidationGroup.class)
     private City city;
     @OneToMany
     @JoinColumn(name = "cv_id")
