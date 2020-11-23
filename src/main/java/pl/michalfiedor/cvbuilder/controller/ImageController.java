@@ -17,10 +17,15 @@ import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validator;
+import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/image")
@@ -29,6 +34,7 @@ public class ImageController {
     private final UserRepository userRepository;
     private final ImageService imageService;
     private final CvRepository cvRepository;
+    private final Validator validator;
 
     @GetMapping("/show")
     public String showImageForm(Model model) {
@@ -37,8 +43,14 @@ public class ImageController {
     }
 
     @PostMapping("/add")
-    public String addImage(HttpSession session, @RequestParam MultipartFile image, Model model) throws IOException {
+    public String addImage(HttpSession session, @RequestParam @Pattern(
+            regexp = "^(\\S+)(.jpg|.png)$", message = "Invalid format.") MultipartFile image,
+                           Model model) throws IOException {
         User user = UserGetter.getUserFromSession(session, userRepository);
+        Set<ConstraintViolation<MultipartFile>> violations = validator.validate(image);
+        if(!violations.isEmpty()){
+            return "imageForm";
+        }
         Cv cv = user.getCv();
         String fileName = "userPhoto_id_" + user.getId();
         String uploadDir = "user_id_" + user.getId();

@@ -31,7 +31,7 @@
                       enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="image"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <input type="file" id="image" name="image" accept="image/png, image/jpeg"/>
+                        <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
                     </div>
                     <div class="form-group form-button" style="float: left">
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>

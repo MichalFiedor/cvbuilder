@@ -4,15 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
+import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ import javax.validation.Valid;
 public class AboutMeController {
     private final UserRepository userRepository;
     private final CvRepository cvRepository;
+    private final Validator validator;
 
     @GetMapping("/show")
     public String showFormSecondPage(Model model){
@@ -28,8 +33,10 @@ public class AboutMeController {
     }
 
     @PostMapping("/add")
-    public String handleSecondPageForm(@Valid Cv cv, BindingResult result, HttpSession session){
-        if(result.hasErrors()){
+    public String handleSecondPageForm(@Validated({AboutMeValidationGroup.class}) Cv cv,
+                                       BindingResult result, HttpSession session){
+        Set<ConstraintViolation<Cv>> violations = validator.validate(cv, AboutMeValidationGroup.class);
+        if(!violations.isEmpty()){
             return "aboutMeForm";
         }
         User user = UserGetter.getUserFromSession(session, userRepository);

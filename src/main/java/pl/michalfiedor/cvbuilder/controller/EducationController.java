@@ -4,13 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.apache.xmpbox.type.BooleanType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
 import pl.michalfiedor.cvbuilder.repository.*;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
+import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
+import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +29,7 @@ public class EducationController {
     private final UniversityRepository universityRepository;
     private final CityRepository cityRepository;
     private final EducationDetailsRepository educationDetailsRepository;
+    private final Validator validator;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
@@ -39,13 +48,21 @@ public class EducationController {
         model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
         getEducationList(session, model);
 
-
         return "educationForm";
     }
 
     @PostMapping("/add")
-    public String addEducation(@ModelAttribute EducationDetails educationDetails,
-                               HttpSession session){
+    public String addEducation(@RequestParam long cityId, @Validated({EducationDetailValidationGroup.class}) EducationDetails educationDetails,
+                               BindingResult result, HttpSession session, Model model){
+
+        Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
+                educationDetails, EducationDetailValidationGroup.class);
+        if(!violations.isEmpty()){
+            List<University> universitiesList = universityRepository.findAllByCityId(cityId);
+            model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
+            model.addAttribute("universitiesPerCity", universitiesList);
+            return "educationForm";
+        }
         User user = UserGetter.getUserFromSession(session, userRepository);
         Cv userCv = user.getCv();
         if(educationDetails.getEnd().length()==0){

@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number" path="phoneNumber" />
+                        <form:input type="tel" id="phoneNumber" placeholder="Phone Number (000-000-000)" path="phoneNumber" />
                         <form:errors path="phoneNumber" cssClass="error"/>
 
                     </div>
@@ -51,9 +51,10 @@
                         <p>Choose City</p>
                         <label for="city"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:select id="city" path="city" >
-                            <form:option value="-" label="--Please Select--"/>
+                            <form:option value="${null}" label="--Please Select--"/>
                             <form:options itemValue="id" itemLabel="name" items="${cities}"/>
                         </form:select>
+                        <form:errors path="city" cssClass="errors"/>
                     </div>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>

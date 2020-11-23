@@ -71,24 +71,28 @@
                     <div>
                         <label for="university"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:select id="university" path="university">
-                            <form:option value="-" label="--Please Select--"/>
+                            <form:option value="${null}" label="--Please Select--"/>
                             <form:options itemLabel="name" itemValue="id" items="${universitiesPerCity}"/>
                         </form:select>
+                        <form:errors path="university" cssClass="errors"/>
                     </div>
                         <div class="form-group">
                             <label for="degree"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <form:input type="text" id="degree" placeholder="Degree" path="degree"/>
+                            <form:errors path="degree" cssClass="errors"/>
                         </div>
                     <div class="form-group">
                         <p>Start date</p>
                         <label for="startDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="startDate" placeholder="Since" path="start"/>
+                        <form:errors path="start" cssClass="errors"/>
                     </div>
                     <div class="form-group">
                         <p>End date (If still, leave empty)</p>
                         <label for="endDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="endDate" placeholder="Since" path="end"/>
                     </div>
+                    <input type="hidden" name="cityId" value="${selectedCity.id}">
                 </div>
                 <div class="form-group form-button" style="float: left">
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>
