@@ -12,6 +12,7 @@ import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
+import pl.michalfiedor.cvbuilder.service.CvGetter;
 import pl.michalfiedor.cvbuilder.service.PdfPrinter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
@@ -34,12 +35,12 @@ public class PdfController {
     @GetMapping("/print")
     public String createPdf(HttpSession session, Model model) throws IOException {
         User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv cv = user.getCv();
+        Cv cv = CvGetter.getCvFromSession(session, cvRepository);
         Path dirPath = Paths.get("user_id_" + user.getId());
         if(!Files.exists(dirPath)){
             Files.createDirectories(dirPath);
         }
-        Path filePath = dirPath.resolve("user_" + user.getId() + "_cv.pdf");
+        Path filePath = dirPath.resolve("user_" + user.getId() + "_cv_" + cv.getId() + ".pdf");
         cv.setCvPath(filePath.toAbsolutePath().toString());
         cvRepository.save(cv);
         PDDocument pdDocument = PDDocument.load(new File("cvTemplate.pdf"));
@@ -66,6 +67,10 @@ public class PdfController {
         } catch (IOException e){
             throw new RuntimeException("Error writing file to output stream.");
         }
+    }
+    @ModelAttribute("cvs")
+    public List<Cv> getCvsList(){
+        return cvRepository.findAll();
     }
 }
 

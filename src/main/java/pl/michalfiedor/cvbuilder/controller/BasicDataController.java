@@ -47,7 +47,8 @@ public class BasicDataController {
         User user = UserGetter.getUserFromSession(session, userRepository);
         if(user!=null && cv!=null) {
             cvRepository.save(cv);
-            user.setCv(cv);
+            session.setAttribute("cvId", cv.getId());
+            user.addCv(cv);
             userRepository.save(user);
         }
         return "redirect:/aboutme/show";

@@ -39,8 +39,8 @@
                 </form>
                 <div class="form-group form-button">
                     <c:if test="${imgName.length()>0}">
-                        <form>
-                            <button formaction="/pdf/print">Generate Cv</button>
+                        <form style="float: right">
+                            <input type="submit" formaction="/pdf/print" name="add" class="form-submit" value="Generate Cv"/>
                         </form>
                     </c:if>
                 </div>

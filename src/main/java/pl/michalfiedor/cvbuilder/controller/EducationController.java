@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
 import pl.michalfiedor.cvbuilder.repository.*;
+import pl.michalfiedor.cvbuilder.service.CvGetter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
@@ -33,6 +34,7 @@ public class EducationController {
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
+
         getEducationList(session, model);
         if(session.getAttribute("showNextButton")!=null){
             model.addAttribute("showNextButton", true);
@@ -42,6 +44,7 @@ public class EducationController {
 
     @PostMapping("/university")
     public String showUniversityList(@RequestParam long cityId, Model model, HttpSession session){
+
         List<University> universitiesList = universityRepository.findAllByCityId(cityId);
         model.addAttribute("universitiesPerCity", universitiesList);
         model.addAttribute("educationDetails", new EducationDetails());
@@ -61,10 +64,10 @@ public class EducationController {
             List<University> universitiesList = universityRepository.findAllByCityId(cityId);
             model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
             model.addAttribute("universitiesPerCity", universitiesList);
+            getEducationList(session, model);
             return "educationForm";
         }
-        User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv userCv = user.getCv();
+        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
         if(educationDetails.getEnd().length()==0){
             educationDetails.setEnd("Still");
         }
@@ -77,6 +80,7 @@ public class EducationController {
 
     @GetMapping("/edit/{id}")
     public String editFormEducation(@PathVariable long id, Model model){
+
         EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
         model.addAttribute("educationDetails", educationDetails);
         return "experienceEditForm";
@@ -84,6 +88,7 @@ public class EducationController {
 
     @GetMapping("/delete/{id}")
     public String deleteEducation(@PathVariable long id){
+
         EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
         educationDetailsRepository.delete(educationDetails);
         return "redirect:/education/show";
@@ -91,17 +96,18 @@ public class EducationController {
 
     @ModelAttribute("universities")
     public List<University> getUniversitiesList(){
+
         return universityRepository.findAll();
     }
 
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
+
         return cityRepository.findAll();
     }
 
     public void getEducationList(HttpSession session, Model model){
-        User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv userCv = user.getCv();
+        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
         model.addAttribute("educationList", userCv.getEducationDetailsList());
     }
 

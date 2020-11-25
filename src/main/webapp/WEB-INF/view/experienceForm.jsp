@@ -32,7 +32,6 @@
                             <th>Job start</th>
                             <th>Job end</th>
                         </tr>
-                </c:if>
                 <c:forEach items="${experiences}" var="experience">
                     <tr>
                         <td>${experience.companyName}</td>
@@ -44,6 +43,7 @@
                     </tr>
                 </c:forEach>
                     </table>
+                </c:if>
                 <form:form method="POST" class="register-form" id="register-form" action="/experience/add"
                     modelAttribute="experience">
                     <div class="form-group">
@@ -78,8 +78,8 @@
                     </div>
                 </form:form>
                 <c:if test="${not empty showNextButtonExperience}">
-                    <form>
-                        <button formaction="/education/show">Next</button>
+                    <form style="float: right">
+                        <input type="submit" formaction="/education/show" name="add" class="form-submit" value="Next"/>
                     </form>
                 </c:if>
                 </div>

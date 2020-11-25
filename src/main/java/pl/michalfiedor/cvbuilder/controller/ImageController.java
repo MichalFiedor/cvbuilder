@@ -2,26 +2,23 @@ package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
+import pl.michalfiedor.cvbuilder.service.CvGetter;
 import pl.michalfiedor.cvbuilder.service.ImageService;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.validation.constraints.Pattern;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,7 +48,7 @@ public class ImageController {
         if(!violations.isEmpty()){
             return "imageForm";
         }
-        Cv cv = user.getCv();
+        Cv cv = CvGetter.getCvFromSession(session, cvRepository);
         String fileName = "userPhoto_id_" + user.getId();
         String uploadDir = "user_id_" + user.getId();
         String extension = FilenameUtils.getExtension(image.getOriginalFilename());

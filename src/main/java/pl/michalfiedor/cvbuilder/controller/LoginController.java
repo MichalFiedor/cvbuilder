@@ -29,7 +29,7 @@ public class LoginController {
         if(user!=null){
             session.setAttribute("id", user.getId());
             model.addAttribute("user", user.getEmail());
-            if(user.getCv()!=null) {
+            if(user.getCvs().size()>0) {
                 return "redirect:dashboard";
             }else{
                 return "redirect:basicdata/show";

@@ -32,7 +32,6 @@
                             <th>Job start</th>
                             <th>Job end</th>
                         </tr>
-                </c:if>
                 <c:forEach items="${experiences}" var="experience">
                     <tr>
                         <td>${experience.companyName}</td>
@@ -44,6 +43,7 @@
                     </tr>
                 </c:forEach>
                     </table>
+                </c:if>
                 <form:form method="POST" class="register-form" id="register-form" action="/experience/edit"
                     modelAttribute="experience">
                     <div class="form-group">

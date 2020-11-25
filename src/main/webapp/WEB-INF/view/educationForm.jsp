@@ -32,7 +32,6 @@
                         <th>Study start</th>
                         <th>Study end</th>
                     </tr>
-                    </c:if>
                     <c:forEach items="${educationList}" var="education">
                         <tr>
                             <td>${education.university.name}</td>
@@ -44,6 +43,7 @@
                         </tr>
                     </c:forEach>
                 </table>
+                </c:if>
                 <form:form method="POST" class="register-form" id="register-form" action="/education/university">
                 <div class="form-group">
                     <p>Choose City</p>
@@ -100,8 +100,8 @@
                 </form:form>
                 </c:if>
                 <c:if test="${not empty showNextButton}">
-                    <form>
-                        <button formaction="/image/show">Next</button>
+                    <form style="float: left">
+                        <input type="submit" formaction="/image/show" name="add" class="form-submit" value="Next"/>
                     </form>
                 </c:if>
             </div>
