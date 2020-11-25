@@ -12,6 +12,7 @@ import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.ExperienceRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
+import pl.michalfiedor.cvbuilder.service.CvGetter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 
 import javax.servlet.http.HttpSession;
@@ -37,12 +38,16 @@ public class ExperienceController {
     }
 
     @PostMapping("/add")
-    public String handleExperienceForm(@Valid Experience experience, BindingResult result, HttpSession session){
+    public String handleExperienceForm(@Valid Experience experience, BindingResult result, Model model,
+                                       HttpSession session){
         if(result.hasErrors()){
+            Cv cv = CvGetter.getCvFromSession(session, cvRepository);
+            if(cv.getExperiences().size()>0){
+                getExperiencesList(session, model);
+            }
             return "experienceForm";
         }
-        User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv userCv = user.getCv();
+        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
         if(experience.getEnd().length()==0){
             experience.setEnd("still");
         }
@@ -66,6 +71,9 @@ public class ExperienceController {
             return "experienceEditForm";
         }
         if(experienceRepository.existsById(experience.getId())){
+            if(experience.getEnd().length()==0){
+                experience.setEnd("still");
+            }
             experienceRepository.save(experience);
         }
         return "redirect:/experience/show";
@@ -79,8 +87,7 @@ public class ExperienceController {
     }
 
     public void getExperiencesList(HttpSession session, Model model){
-        User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv userCv = user.getCv();
+        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
         model.addAttribute("experiences", userCv.getExperiences());
     }
 }

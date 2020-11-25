@@ -26,6 +26,11 @@ public class User {
     @Email(message = "Enter correct email address.")
     @Column(unique = true)
     private String email;
-    @OneToOne
-    private Cv cv;
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Cv> cvs;
+
+    public void addCv(Cv cv){
+        cvs.add(cv);
+    }
 }

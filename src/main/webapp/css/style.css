@@ -237,19 +237,23 @@ ul#menu li a:hover
   padding: 28px 0 5px 0;
   text-align: center; 
   background: #3B3939 url(footer.png) repeat-x;
-  color: #A8AA94;}
+  color: #A8AA94;
+  margin-top: -200px;}
 
 #footer p
 { line-height: 1.7em;
-  padding: 0 0 10px 0;}
+  padding: 0 0 10px 0;
+  margin-top: -200px;}
 
 #footer a
 { color: #A8AA94;
-  text-decoration: none;}
+  text-decoration: none;
+  margin-top: -200px;}
 
 #footer a:hover
 { color: #FFF;
-  text-decoration: none;}
+  text-decoration: none;
+  margin-top: -200px;}
 
 .search
 { color: #5D5D5D; 

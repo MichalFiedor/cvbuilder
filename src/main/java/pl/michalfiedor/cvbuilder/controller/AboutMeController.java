@@ -10,6 +10,7 @@ import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
+import pl.michalfiedor.cvbuilder.service.CvGetter;
 import pl.michalfiedor.cvbuilder.service.UserGetter;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 
@@ -39,8 +40,7 @@ public class AboutMeController {
         if(!violations.isEmpty()){
             return "aboutMeForm";
         }
-        User user = UserGetter.getUserFromSession(session, userRepository);
-        Cv userCv = user.getCv();
+        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
         userCv.setAboutMe(cv.getAboutMe());
         cvRepository.save(userCv);
         return "redirect:/experience/show";
