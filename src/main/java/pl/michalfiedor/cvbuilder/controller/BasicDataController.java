@@ -1,6 +1,8 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,12 +14,15 @@ import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CityRepository;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.repository.UserRepository;
-import pl.michalfiedor.cvbuilder.service.UserGetter;
+import pl.michalfiedor.cvbuilder.service.CityService;
+import pl.michalfiedor.cvbuilder.service.CvService;
+import pl.michalfiedor.cvbuilder.service.UserService;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -25,9 +30,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/basicdata")
 public class BasicDataController {
-    private final CityRepository cityRepository;
-    private final UserRepository userRepository;
-    private final CvRepository cvRepository;
+    private final CityService cityService;
+    private final UserService userService;
+    private final CvService cvService;
     private final Validator validator;
 
     @GetMapping("/show")
@@ -38,24 +43,28 @@ public class BasicDataController {
 
     @PostMapping("/add")
     public String handleFirstPageForm(@Validated({BasicDataValidationGroup.class}) Cv cv,
-                                      BindingResult result, HttpSession session){
+                                      BindingResult result, Principal principal, HttpSession session){
         Set<ConstraintViolation<Cv>> violations = validator.validate(cv, BasicDataValidationGroup.class);
         if(!violations.isEmpty()){
             return "basicDataForm";
         }
 
-        User user = UserGetter.getUserFromSession(session, userRepository);
+        User user = userService.getUser(principal.getName());
         if(user!=null && cv!=null) {
-            cvRepository.save(cv);
+            cvService.save(cv);
             session.setAttribute("cvId", cv.getId());
             user.addCv(cv);
-            userRepository.save(user);
+            userService.save(user);
         }
         return "redirect:/aboutme/show";
     }
 
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
-        return cityRepository.findAll();
+        return cityService.getCities();
+    }
+    @ModelAttribute("userEmail")
+    public String getUserEmail(Principal principal){
+        return principal.getName();
     }
 }

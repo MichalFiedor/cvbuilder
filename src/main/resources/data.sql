@@ -7,6 +7,7 @@ INSERT INTO city (name) VALUES ('Szczecin');
 INSERT INTO city (name) VALUES ('Gdansk');
 INSERT INTO city (name) VALUES ('Katowice');
 INSERT INTO city (name) VALUES ('Rzeszow');
+-------------------------------------------------------------------------------------------
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Jagiellonski', 1);
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Ekonomiczny w Krakowie', 1);
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Rolniczy', 1);
@@ -42,3 +43,5 @@ INSERT INTO university (name, city_id) VALUES ('Wyzsza Szkola Technologii Inform
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Rzeszowski', 9);
 INSERT INTO university (name, city_id) VALUES ('Wyzsza Szkola Informatyki i Zarzadzania', 9);
 INSERT INTO university (name, city_id) VALUES ('Politechnika Rzeszowska', 9);
+-------------------------------------------------------------------------------------------------
+INSERT INTO role (name) VALUES ('ROLE_USER');

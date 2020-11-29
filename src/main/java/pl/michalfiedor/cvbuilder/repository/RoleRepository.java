@@ -2,9 +2,10 @@ package pl.michalfiedor.cvbuilder.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.michalfiedor.cvbuilder.model.User;
+import pl.michalfiedor.cvbuilder.model.Role;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+
+    Role findByName(String name);
 }

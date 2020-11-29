@@ -1,22 +1,20 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.xmpbox.type.BooleanType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
-import pl.michalfiedor.cvbuilder.repository.*;
-import pl.michalfiedor.cvbuilder.service.CvGetter;
-import pl.michalfiedor.cvbuilder.service.UserGetter;
-import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
+import pl.michalfiedor.cvbuilder.service.CityService;
+import pl.michalfiedor.cvbuilder.service.CvService;
+import pl.michalfiedor.cvbuilder.service.EducationDetailsService;
+import pl.michalfiedor.cvbuilder.service.UniversityService;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
 import javax.validation.Validator;
 import java.util.List;
 import java.util.Set;
@@ -25,12 +23,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/education")
 public class EducationController {
-    private final UserRepository userRepository;
-    private final CvRepository cvRepository;
-    private final UniversityRepository universityRepository;
-    private final CityRepository cityRepository;
-    private final EducationDetailsRepository educationDetailsRepository;
+    private final UniversityService universityService;
+    private final CityService cityService;
+    private final EducationDetailsService educationDetailsService;
     private final Validator validator;
+    private final CvService cvService;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
@@ -45,10 +42,10 @@ public class EducationController {
     @PostMapping("/university")
     public String showUniversityList(@RequestParam long cityId, Model model, HttpSession session){
 
-        List<University> universitiesList = universityRepository.findAllByCityId(cityId);
+        List<University> universitiesList = universityService.findAllByCityId(cityId);
         model.addAttribute("universitiesPerCity", universitiesList);
         model.addAttribute("educationDetails", new EducationDetails());
-        model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
+        model.addAttribute("selectedCity", cityService.findById(cityId));
         getEducationList(session, model);
 
         return "educationForm";
@@ -61,19 +58,19 @@ public class EducationController {
         Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
                 educationDetails, EducationDetailValidationGroup.class);
         if(!violations.isEmpty()){
-            List<University> universitiesList = universityRepository.findAllByCityId(cityId);
-            model.addAttribute("selectedCity", cityRepository.findById(cityId).orElseThrow());
+            List<University> universitiesList = universityService.findAllByCityId(cityId);
+            model.addAttribute("selectedCity", cityService.findById(cityId));
             model.addAttribute("universitiesPerCity", universitiesList);
             getEducationList(session, model);
             return "educationForm";
         }
-        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
+        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
         if(educationDetails.getEnd().length()==0){
             educationDetails.setEnd("Still");
         }
-        educationDetailsRepository.save(educationDetails);
+        educationDetailsService.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
-        cvRepository.save(userCv);
+        cvService.save(userCv);
         session.setAttribute("showNextButton", true);
         return "redirect:/education/show";
     }
@@ -81,33 +78,31 @@ public class EducationController {
     @GetMapping("/edit/{id}")
     public String editFormEducation(@PathVariable long id, Model model){
 
-        EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
+        EducationDetails educationDetails = educationDetailsService.findById(id);
         model.addAttribute("educationDetails", educationDetails);
         return "experienceEditForm";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteEducation(@PathVariable long id){
-
-        EducationDetails educationDetails = educationDetailsRepository.findById(id).orElseThrow();
-        educationDetailsRepository.delete(educationDetails);
+        educationDetailsService.delete(id);
         return "redirect:/education/show";
     }
 
-    @ModelAttribute("universities")
-    public List<University> getUniversitiesList(){
-
-        return universityRepository.findAll();
-    }
+//    @ModelAttribute("universities")
+//    public List<University> getUniversitiesList(){
+//
+//        return universityRepository.findAll();
+//    }
 
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
 
-        return cityRepository.findAll();
+        return cityService.getCities();
     }
 
     public void getEducationList(HttpSession session, Model model){
-        Cv userCv = CvGetter.getCvFromSession(session, cvRepository);
+        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
         model.addAttribute("educationList", userCv.getEducationDetailsList());
     }
 

@@ -14,28 +14,10 @@ import javax.xml.validation.Validator;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes({"user"})
 public class LoginController {
-    private final UserRepository userRepository;
 
     @GetMapping("/login")
     public String showLoginPage(){
-        return "loginPage";
-    }
-
-    @PostMapping("/log")
-    public String logProcess(@RequestParam String login, @RequestParam String password, Model model, HttpSession session){
-        User user = userRepository.findUserByLoginAndPassword(login, password);
-        if(user!=null){
-            session.setAttribute("id", user.getId());
-            model.addAttribute("user", user.getEmail());
-            if(user.getCvs().size()>0) {
-                return "redirect:dashboard";
-            }else{
-                return "redirect:basicdata/show";
-            }
-        }
-        model.addAttribute("message", true);
         return "loginPage";
     }
 }

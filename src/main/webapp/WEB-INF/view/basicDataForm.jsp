@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="email" id="email" path="email" value="${user}"/>
+                        <form:input type="email" id="email" path="email" value="${userEmail}"/>
                         <form:errors path="email" cssClass="error"/>
                     </div>
                     <div class="form-group">

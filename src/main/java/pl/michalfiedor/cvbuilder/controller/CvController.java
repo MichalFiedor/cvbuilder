@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
-import pl.michalfiedor.cvbuilder.service.CvGetter;
 
 import java.io.IOException;
 import java.nio.file.Files;
