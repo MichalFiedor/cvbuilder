@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
+import pl.michalfiedor.cvbuilder.validator.annotation.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -54,6 +55,7 @@ public class Cv {
     private List<Language> languages;
     private String imagePath;
     private String cvPath;
+    private String cvFileName;
 
     public void addExperienceToCollection(Experience experience){
         experiences.add(experience);

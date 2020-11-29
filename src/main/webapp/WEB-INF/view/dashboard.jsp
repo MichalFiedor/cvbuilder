@@ -33,9 +33,9 @@
 
     </c:forEach>
     </table>
-    <form>
+    <form action="/basicdata/show" method="get">
         <div class="form-group form-button" style="float: left">
-            <input type="submit" name="add" id="add" class="form-submit" value="Create new Cv" formaction="/basicdata/show"/>
+            <input type="submit" name="add" id="add" class="form-submit" value="Create new Cv" />
         </div>
     </form>
 </div>

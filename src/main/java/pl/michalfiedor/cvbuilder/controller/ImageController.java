@@ -9,10 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
-import pl.michalfiedor.cvbuilder.repository.UserRepository;
-import pl.michalfiedor.cvbuilder.service.CvGetter;
+import pl.michalfiedor.cvbuilder.service.CvService;
 import pl.michalfiedor.cvbuilder.service.ImageService;
-import pl.michalfiedor.cvbuilder.service.UserGetter;
+import pl.michalfiedor.cvbuilder.service.UserService;
 
 
 import javax.servlet.http.HttpSession;
@@ -22,16 +21,17 @@ import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/image")
 @RequiredArgsConstructor
 public class ImageController {
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ImageService imageService;
-    private final CvRepository cvRepository;
     private final Validator validator;
+    private final CvService cvService;
 
     @GetMapping("/show")
     public String showImageForm(Model model) {
@@ -40,22 +40,21 @@ public class ImageController {
     }
 
     @PostMapping("/add")
-    public String addImage(HttpSession session, @RequestParam @Pattern(
-            regexp = "^(\\S+)(.jpg|.png)$", message = "Invalid format.") MultipartFile image,
-                           Model model) throws IOException {
-        User user = UserGetter.getUserFromSession(session, userRepository);
+    public String addImage(HttpSession session, MultipartFile image,
+                           Model model, Principal principal) throws IOException {
+        User user = userService.getUser(principal.getName());
         Set<ConstraintViolation<MultipartFile>> violations = validator.validate(image);
         if(!violations.isEmpty()){
             return "imageForm";
         }
-        Cv cv = CvGetter.getCvFromSession(session, cvRepository);
+        Cv cv = cvService.getCvById(cvService.getCvIdFromSession(session));
         String fileName = "userPhoto_id_" + user.getId();
         String uploadDir = "user_id_" + user.getId();
         String extension = FilenameUtils.getExtension(image.getOriginalFilename());
         String imgPath = uploadDir + "/" + fileName + "." + extension;
         Path filePath = Paths.get(imgPath);
         cv.setImagePath(filePath.toAbsolutePath().toString());
-        cvRepository.save(cv);
+        cvService.save(cv);
         imageService.saveImageFile(uploadDir, fileName, image, extension);
         model.addAttribute("imgName", image.getOriginalFilename());
         model.addAttribute("imgPath", cv.getImagePath());

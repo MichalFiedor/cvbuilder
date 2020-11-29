@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class PdfPrinter {
+public class PdfService {
 
     public static PDPageContentStream getContentStream(PDDocument pdDocument, PDPage page) {
         try {
