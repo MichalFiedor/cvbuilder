@@ -15,7 +15,7 @@ INSERT INTO university (name, city_id) VALUES ('Politechnika Krakowska', 1);
 INSERT INTO university (name, city_id) VALUES ('Akademia Gorniczo-Hutnicza', 1);
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Warszawski', 2);
 INSERT INTO university (name, city_id) VALUES ('Politechnika Warszawska', 2);
-INSERT INTO university (name, city_id) VALUES ('Szkola Głowna Handlowa', 2);
+INSERT INTO university (name, city_id) VALUES ('Szkola Glowna Handlowa', 2);
 INSERT INTO university (name, city_id) VALUES ('Dolnoslaska Szkola Wyzsza', 3);
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Ekonomiczny we Wroclawiu', 3);
 INSERT INTO university (name, city_id) VALUES ('Uniwersytet Wroclawski', 3);

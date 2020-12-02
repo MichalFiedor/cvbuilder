@@ -26,7 +26,7 @@
                         <form:input type="email" id="email" placeholder="Your Email"  path="email"/>
                         <form:errors path="email" cssClass="error"/>
                         <c:if test="${not empty emailFailed}">
-                            <p>User with that email already exist.</p>
+                            <p>User with that email already exists.</p>
                         </c:if>
 
                     </div>

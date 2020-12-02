@@ -33,6 +33,9 @@
                         <label for="image"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
                     </div>
+                    <c:if test="${not empty validationMessage}">
+                        <p>${validationMessage}</p>
+                    </c:if>
                     <div class="form-group form-button" style="float: left">
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>
                     </div>

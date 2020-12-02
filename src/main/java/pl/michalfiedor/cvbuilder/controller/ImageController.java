@@ -6,18 +6,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.michalfiedor.cvbuilder.exception.InvalidFileExtensionException;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.service.CvService;
 import pl.michalfiedor.cvbuilder.service.ImageService;
 import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.validator.FileValidator;
 
 
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.constraints.Pattern;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +35,7 @@ public class ImageController {
     private final ImageService imageService;
     private final Validator validator;
     private final CvService cvService;
+    private final FileValidator fileValidator;
 
     @GetMapping("/show")
     public String showImageForm(Model model) {
@@ -42,6 +46,12 @@ public class ImageController {
     @PostMapping("/add")
     public String addImage(HttpSession session, MultipartFile image,
                            Model model, Principal principal) throws IOException {
+        try {
+            fileValidator.validateExtension(image);
+        } catch (InvalidFileExtensionException e) {
+            model.addAttribute("validationMessage", "Only jpg/jpeg and png files are accepted");
+            return "imageForm";
+        }
         User user = userService.getUser(principal.getName());
         Set<ConstraintViolation<MultipartFile>> violations = validator.validate(image);
         if(!violations.isEmpty()){

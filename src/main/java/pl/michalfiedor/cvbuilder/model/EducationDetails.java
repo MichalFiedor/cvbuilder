@@ -22,7 +22,7 @@ public class EducationDetails {
     private String end;
     @Column(length = 160)
     @Size(groups = EducationDetailValidationGroup.class,
-            min = 5, message = "Text must have more than 5 characters.")
+            min = 3, message = "Text must have more than 3 characters.")
     @Size(groups = EducationDetailValidationGroup.class,
             max = 150, message = "Text must have no more than 150 characters.")
     private String degree;

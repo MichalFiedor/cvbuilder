@@ -29,8 +29,8 @@
                     <tr>
                         <th>University name</th>
                         <th>Degree</th>
-                        <th>Study start</th>
-                        <th>Study end</th>
+                        <th>Studies start</th>
+                        <th>Studies end</th>
                     </tr>
                     <c:forEach items="${educationList}" var="education">
                         <tr>
@@ -99,8 +99,8 @@
                 </div>
                 </form:form>
                 </c:if>
-                <c:if test="${not empty showNextButton}">
-                    <form style="float: left">
+                <c:if test="${not empty showNextButton and educationList.size()>0}">
+                    <form style="float: right">
                         <input type="submit" formaction="/image/show" name="add" class="form-submit" value="Next"/>
                     </form>
                 </c:if>

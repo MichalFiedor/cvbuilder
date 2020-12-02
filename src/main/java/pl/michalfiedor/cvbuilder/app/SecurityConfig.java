@@ -43,11 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/dashboard/show", true)
-                .failureUrl("/login")
+                .failureUrl("/login?error=true")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll()
                 .and()
                 .csrf().disable();
     }
