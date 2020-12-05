@@ -29,8 +29,8 @@
                     <tr>
                         <th>University name</th>
                         <th>Degree</th>
-                        <th>Study start</th>
-                        <th>Study end</th>
+                        <th>Studies start</th>
+                        <th>Studies end</th>
                     </tr>
                     <c:forEach items="${educationList}" var="education">
                         <tr>
@@ -91,6 +91,9 @@
                         <p>End date (If still, leave empty)</p>
                         <label for="endDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="endDate" placeholder="Since" path="end"/>
+                        <c:if test="${not empty invalidEndDate}">
+                            <p>${invalidEndDate}</p>
+                        </c:if>
                     </div>
                     <input type="hidden" name="cityId" value="${selectedCity.id}">
                 </div>
@@ -99,8 +102,8 @@
                 </div>
                 </form:form>
                 </c:if>
-                <c:if test="${not empty showNextButton}">
-                    <form style="float: left">
+                <c:if test="${not empty showNextButton and educationList.size()>0}">
+                    <form style="float: right">
                         <input type="submit" formaction="/image/show" name="add" class="form-submit" value="Next"/>
                     </form>
                 </c:if>

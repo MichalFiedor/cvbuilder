@@ -7,10 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
-import pl.michalfiedor.cvbuilder.service.CityService;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.EducationDetailsService;
-import pl.michalfiedor.cvbuilder.service.UniversityService;
+import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +29,7 @@ public class EducationController {
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
 
-        getEducationList(session, model);
+        educationDetailsService.getEducationList(session, model);
         if(session.getAttribute("showNextButton")!=null){
             model.addAttribute("showNextButton", true);
         }
@@ -41,12 +38,12 @@ public class EducationController {
 
     @PostMapping("/university")
     public String showUniversityList(@RequestParam long cityId, Model model, HttpSession session){
-
+        session.removeAttribute("showNextButton");
         List<University> universitiesList = universityService.findAllByCityId(cityId);
         model.addAttribute("universitiesPerCity", universitiesList);
         model.addAttribute("educationDetails", new EducationDetails());
         model.addAttribute("selectedCity", cityService.findById(cityId));
-        getEducationList(session, model);
+        educationDetailsService.getEducationList(session, model);
 
         return "educationForm";
     }
@@ -54,14 +51,14 @@ public class EducationController {
     @PostMapping("/add")
     public String addEducation(@RequestParam long cityId, @Validated({EducationDetailValidationGroup.class}) EducationDetails educationDetails,
                                BindingResult result, HttpSession session, Model model){
-
         Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
                 educationDetails, EducationDetailValidationGroup.class);
+
         if(!violations.isEmpty()){
             List<University> universitiesList = universityService.findAllByCityId(cityId);
             model.addAttribute("selectedCity", cityService.findById(cityId));
             model.addAttribute("universitiesPerCity", universitiesList);
-            getEducationList(session, model);
+            educationDetailsService.getEducationList(session, model);
             return "educationForm";
         }
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
@@ -72,6 +69,7 @@ public class EducationController {
         userCv.addEducationDetailToCollection(educationDetails);
         cvService.save(userCv);
         session.setAttribute("showNextButton", true);
+
         return "redirect:/education/show";
     }
 
@@ -89,21 +87,11 @@ public class EducationController {
         return "redirect:/education/show";
     }
 
-//    @ModelAttribute("universities")
-//    public List<University> getUniversitiesList(){
-//
-//        return universityRepository.findAll();
-//    }
-
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
-
         return cityService.getCities();
     }
 
-    public void getEducationList(HttpSession session, Model model){
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        model.addAttribute("educationList", userCv.getEducationDetailsList());
-    }
+
 
 }

@@ -77,7 +77,7 @@
                     <input type="submit" name="add" id="add" class="form-submit" value="Add"/>
                     </div>
                 </form:form>
-                <c:if test="${not empty showNextButtonExperience}">
+                <c:if test="${not empty showNextButtonExperience and experiences.size()>0}">
                     <form style="float: right">
                         <input type="submit" formaction="/education/show" name="add" class="form-submit" value="Next"/>
                     </form>

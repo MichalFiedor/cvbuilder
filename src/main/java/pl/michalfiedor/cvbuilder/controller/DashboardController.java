@@ -21,12 +21,18 @@ public class DashboardController {
     private final CvRepository cvRepository;
 
     @GetMapping("/show")
-    public String showDashboard(){
+    public String showDashboard(Model model){
+        List<Cv> cvs = cvRepository.findAll();
+        for(Cv cv : cvs){
+            if (cv.getCvPath()==null){
+                cvRepository.delete(cv);
+            }
+        }
+        cvs=cvRepository.findAll();
+        if(cvs.size()>0){
+            model.addAttribute("cvs", cvs);
+        }
         return "dashboard";
     }
 
-    @ModelAttribute("cvs")
-    public List<Cv> getCvsList(){
-        return cvRepository.findAll();
-    }
 }

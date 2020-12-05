@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <head>
     <title>Cv generator</title>
     <meta name="description" content="website description" />
@@ -12,9 +12,21 @@
     <div id="logo">
         <div id="logo_text">
             <!-- class="logo_colour", allows you to change the colour of the text -->
-            <h1><a href="http://localhost:8080/login">CV<span class="logo_colour">generator</span></a></h1>
+            <h1><a href="/dashboard/show">CV<span class="logo_colour">generator</span></a></h1>
             <h2>Create your own CV</h2>
         </div>
+        <security:authorize access="isAuthenticated()">
+
+            <form action="/logout" method="get" style="float: right">
+                <div class="form-group form-button" style="float: left">
+                    <div style="color: white;">
+                        Logged as: <security:authentication property="principal.username" />
+                        <input type="submit" name="add" id="add" class="form-submit" value="Logout" />
+                    </div>
+                </div>
+            </form>
+        </security:authorize>
+
     </div>
     <div id="menubar">
         <ul id="menu">

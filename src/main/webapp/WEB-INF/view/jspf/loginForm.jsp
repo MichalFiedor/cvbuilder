@@ -35,7 +35,7 @@
                         <input type="password" name="password" id="your_pass" placeholder="Password"/>
                     </div>
                     <div >
-                        <c:if test="${not empty message}">
+                        <c:if test="${not empty param.error}">
                             <c:out value="Login or password incorrect. Try again"/>
                         </c:if>
                     </div>
