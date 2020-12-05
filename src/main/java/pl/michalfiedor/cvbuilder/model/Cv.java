@@ -25,11 +25,18 @@ public class Cv {
     private String aboutMe;
     @NotBlank(message = "Incorrect value.",
             groups = BasicDataValidationGroup.class)
-    @Size(min = 2, message = "Too short name")
+    @Size(min = 2, message = "Too short name",
+            groups = BasicDataValidationGroup.class)
+    @Pattern(regexp = "^[aA-zZ\" \"]{2,}$",
+            groups = BasicDataValidationGroup.class,
+            message = "Your first name can not contain digits.")
     private String firstName;
     @Size(min = 2, message = "To short last name.",
             groups = BasicDataValidationGroup.class)
     @NotBlank(message = "Incorrect value.")
+    @Pattern(regexp = "^[aA-zZ\" \"]{2,}$",
+            groups = BasicDataValidationGroup.class,
+            message = "Your last name can not contain digits.")
     private String lastName;
     @Email(message = "Enter correct email address.",
             groups = BasicDataValidationGroup.class)

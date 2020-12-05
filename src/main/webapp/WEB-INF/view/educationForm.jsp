@@ -91,6 +91,9 @@
                         <p>End date (If still, leave empty)</p>
                         <label for="endDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="endDate" placeholder="Since" path="end"/>
+                        <c:if test="${not empty invalidEndDate}">
+                            <p>${invalidEndDate}</p>
+                        </c:if>
                     </div>
                     <input type="hidden" name="cityId" value="${selectedCity.id}">
                 </div>

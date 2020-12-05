@@ -7,10 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
-import pl.michalfiedor.cvbuilder.service.CityService;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.EducationDetailsService;
-import pl.michalfiedor.cvbuilder.service.UniversityService;
+import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
 
 import javax.servlet.http.HttpSession;
@@ -56,6 +53,7 @@ public class EducationController {
                                BindingResult result, HttpSession session, Model model){
         Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
                 educationDetails, EducationDetailValidationGroup.class);
+
         if(!violations.isEmpty()){
             List<University> universitiesList = universityService.findAllByCityId(cityId);
             model.addAttribute("selectedCity", cityService.findById(cityId));

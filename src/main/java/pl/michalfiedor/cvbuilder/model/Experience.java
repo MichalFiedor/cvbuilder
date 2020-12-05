@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
@@ -20,6 +21,8 @@ public class Experience {
     @NotBlank(message = "Enter correct company name.")
     private String companyName;
     @NotBlank(message = "Enter correct position name.")
+    @Pattern(regexp = "^[aA-zZ\" \"]{2,}$",
+    message = "Position name can not contain digits.")
     private String position;
     @NotBlank(message = "You must enter start date.")
     private String start;
