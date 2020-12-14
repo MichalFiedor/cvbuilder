@@ -60,8 +60,6 @@
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Next"/>
                     </div>
                 </form:form>
-
-
             </div>
         </div>
     </div>

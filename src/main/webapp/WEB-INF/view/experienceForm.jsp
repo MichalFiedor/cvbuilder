@@ -59,13 +59,16 @@
                     <div class="form-group">
                         <p>Start date</p>
                         <label for="startDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="month" id="startDate" placeholder="Since" path="start"/>
+                        <form:input type="month" id="startDate" placeholder="Since" path="start" value="${null}"/>
                         <form:errors path="start" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <p>End date (If still, leave empty)</p>
                         <label for="endDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                        <form:input type="month" id="endDate" placeholder="Since" path="end"/>
+                        <form:input type="month" id="endDate" placeholder="Since" path="end" value="${null}"/>
+                        <c:if test="${not empty isAfterStartDate}">
+                                <p>${endDateError}</p>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="description"><i class="zmdi zmdi-account material-icons-name"></i></label>
