@@ -1,9 +1,7 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.HibernateValidator;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.repository.CityRepository;
-import pl.michalfiedor.cvbuilder.repository.CvRepository;
-import pl.michalfiedor.cvbuilder.repository.UserRepository;
 import pl.michalfiedor.cvbuilder.service.CityService;
 import pl.michalfiedor.cvbuilder.service.CvService;
 import pl.michalfiedor.cvbuilder.service.UserService;
@@ -22,7 +17,6 @@ import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 import java.security.Principal;
 import java.util.List;

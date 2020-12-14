@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.Experience;
 import pl.michalfiedor.cvbuilder.service.CvService;
+import pl.michalfiedor.cvbuilder.service.ErrorGenerator;
 import pl.michalfiedor.cvbuilder.service.ExperienceService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ import javax.validation.Valid;
 public class ExperienceController {
     private final CvService cvService;
     private final ExperienceService experienceService;
+    private final ErrorGenerator errorGenerator;
 
     @GetMapping("/show")
     public String showExperienceFormPage(Model model, HttpSession session){
@@ -34,6 +37,10 @@ public class ExperienceController {
     public String handleExperienceForm(@Valid Experience experience, BindingResult result, Model model,
                                        HttpSession session){
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
+        Map<String, String> errors = errorGenerator.generateObjectErrors(result);
+        if(errors.containsKey("isAfterStartDate")){
+            model.addAttribute("endDateError", errors.get("isAfterStartDate"));
+        }
         if(result.hasErrors()){
             if(userCv.getExperiences().size()>0){
                 getExperiencesList(session, model);
@@ -41,7 +48,7 @@ public class ExperienceController {
             return "experienceForm";
         }
         if(experience.getEnd().length()==0){
-            experience.setEnd("still");
+            experience.setEnd("Still");
         }
         experienceService.save(experience);
         userCv.addExperienceToCollection(experience);
