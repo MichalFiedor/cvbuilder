@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UniversityService {
+public class UniversityService implements IUniversityService{
     private final UniversityRepository universityRepository;
 
     public List<University> findAllByCityId(long id){

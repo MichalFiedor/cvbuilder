@@ -7,7 +7,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class DateService {
+public class DateService implements IDateService {
 
     public boolean isStartBeforeEndDate(Experience experience){
         YearMonth start = parseStringToYearMonth(experience.getStart());
@@ -17,7 +17,6 @@ public class DateService {
         } else {
              end = parseStringToYearMonth(experience.getEnd());
         }
-
         if(start.isBefore(end)){
             return true;
         }

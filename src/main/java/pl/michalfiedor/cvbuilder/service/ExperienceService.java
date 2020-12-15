@@ -7,7 +7,7 @@ import pl.michalfiedor.cvbuilder.repository.ExperienceRepository;
 
 @Service
 @RequiredArgsConstructor
-public class ExperienceService {
+public class ExperienceService implements IExperienceService{
     private final ExperienceRepository experienceRepository;
 
     public Experience findById(long id) {

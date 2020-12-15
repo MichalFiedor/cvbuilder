@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.service.CvService;
+import pl.michalfiedor.cvbuilder.service.ICvService;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +22,7 @@ import java.util.Set;
 @RequestMapping("/aboutme")
 public class AboutMeController {
 
-    private final CvService cvService;
+    private final ICvService cvService;
     private final Validator validator;
 
     @GetMapping("/show")

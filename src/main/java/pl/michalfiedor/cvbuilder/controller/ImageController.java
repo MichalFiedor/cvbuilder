@@ -10,9 +10,7 @@ import pl.michalfiedor.cvbuilder.exception.InvalidFileExtensionException;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.ImageService;
-import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.validator.FileValidator;
 
 
@@ -31,10 +29,10 @@ import java.util.Set;
 @RequestMapping("/image")
 @RequiredArgsConstructor
 public class ImageController {
-    private final UserService userService;
-    private final ImageService imageService;
+    private final IUserService userService;
+    private final IImageService imageService;
     private final Validator validator;
-    private final CvService cvService;
+    private final ICvService cvService;
     private final FileValidator fileValidator;
 
     @GetMapping("/show")
@@ -46,17 +44,20 @@ public class ImageController {
     @PostMapping("/add")
     public String addImage(HttpSession session, MultipartFile image,
                            Model model, Principal principal) throws IOException {
+
         try {
             fileValidator.validateExtension(image);
         } catch (InvalidFileExtensionException e) {
             model.addAttribute("validationMessage", "Only jpg/jpeg and png files are accepted");
             return "imageForm";
         }
+
         User user = userService.getUser(principal.getName());
         Set<ConstraintViolation<MultipartFile>> violations = validator.validate(image);
         if(!violations.isEmpty()){
             return "imageForm";
         }
+
         Cv cv = cvService.getCvById(cvService.getCvIdFromSession(session));
         String fileName = "userPhoto_id_" + user.getId();
         String uploadDir = "user_id_" + user.getId();

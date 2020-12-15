@@ -7,9 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.Experience;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.ErrorGenerator;
-import pl.michalfiedor.cvbuilder.service.ExperienceService;
+import pl.michalfiedor.cvbuilder.service.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -19,8 +17,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/experience")
 public class ExperienceController {
-    private final CvService cvService;
-    private final ExperienceService experienceService;
+    private final ICvService cvService;
+    private final IExperienceService experienceService;
     private final ErrorGenerator errorGenerator;
 
     @GetMapping("/show")

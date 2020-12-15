@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService {
+public class ImageService implements IImageService{
 
     public void saveImageFile(String uploadDir, String fileName, MultipartFile file, String extension) throws IOException {
         Path uploadPath = Paths.get(uploadDir);

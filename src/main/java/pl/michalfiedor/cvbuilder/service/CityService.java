@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CityService {
+public class CityService implements ICityService {
     private final CityRepository cityRepository;
 
     public List<City> getCities(){

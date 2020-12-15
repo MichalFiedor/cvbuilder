@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
@@ -33,7 +33,6 @@ public class UserService {
     public void save(User user){
         userRepository.save(user);
     }
-
 
     private boolean emailExist(String email){
         return userRepository.findByEmail(email)!=null;

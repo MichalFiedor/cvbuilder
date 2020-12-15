@@ -20,11 +20,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/education")
 public class EducationController {
-    private final UniversityService universityService;
-    private final CityService cityService;
-    private final EducationDetailsService educationDetailsService;
+    private final IUniversityService universityService;
+    private final ICityService cityService;
+    private final IEducationDetailsService educationDetailsService;
     private final Validator validator;
-    private final CvService cvService;
+    private final ICvService cvService;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
@@ -38,6 +38,7 @@ public class EducationController {
 
     @PostMapping("/university")
     public String showUniversityList(@RequestParam long cityId, Model model, HttpSession session){
+
         session.removeAttribute("showNextButton");
         List<University> universitiesList = universityService.findAllByCityId(cityId);
         model.addAttribute("universitiesPerCity", universitiesList);
@@ -51,6 +52,7 @@ public class EducationController {
     @PostMapping("/add")
     public String addEducation(@RequestParam long cityId, @Validated({EducationDetailValidationGroup.class}) EducationDetails educationDetails,
                                BindingResult result, HttpSession session, Model model){
+
         Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
                 educationDetails, EducationDetailValidationGroup.class);
 
@@ -61,10 +63,12 @@ public class EducationController {
             educationDetailsService.getEducationList(session, model);
             return "educationForm";
         }
+
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
         if(educationDetails.getEnd().length()==0){
             educationDetails.setEnd("Still");
         }
+
         educationDetailsService.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
         cvService.save(userCv);

@@ -11,9 +11,9 @@ import javax.servlet.http.HttpSession;
 
 @Service
 @RequiredArgsConstructor
-public class EducationDetailsService {
+public class EducationDetailsService implements IEducationDetailsService{
     private final EducationDetailsRepository educationDetailsRepository;
-    private final CvService cvService;
+    private final ICvService cvService;
 
     public EducationDetails findById(long id){
         return educationDetailsRepository.findById(id).orElseThrow();
