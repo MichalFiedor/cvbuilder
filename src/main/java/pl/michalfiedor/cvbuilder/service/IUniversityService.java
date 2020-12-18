@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IUniversityService {
 
-    public List<University> findAllByCityId(long id);
+    List<University> findAllByCityId(long id);
 }

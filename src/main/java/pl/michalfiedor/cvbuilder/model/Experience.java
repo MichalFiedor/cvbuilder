@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 @Entity
 @Getter
 @Setter
-@IsAfterStartDate
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +23,6 @@ public class Experience {
     private String position;
     @NotBlank(message = "You must enter start date.")
     private String start;
-
     private String end;
     @Column(length = 150)
     @Size(min = 5, message = "Text must have more than 5 characters.")

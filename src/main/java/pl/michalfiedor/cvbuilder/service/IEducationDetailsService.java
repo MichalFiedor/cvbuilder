@@ -12,5 +12,5 @@ public interface IEducationDetailsService {
 
     void delete(long id);
 
-    public void getEducationList(HttpSession session, Model model);
+    void getEducationList(HttpSession session, Model model);
 }

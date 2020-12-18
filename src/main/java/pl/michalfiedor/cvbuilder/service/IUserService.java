@@ -5,9 +5,9 @@ import pl.michalfiedor.cvbuilder.model.User;
 
 public interface IUserService {
 
-    public void registerNewUserAccount(User user) throws UserAlreadyExistException;
+    void registerNewUserAccount(User user) throws UserAlreadyExistException;
 
-    public User getUser(String userEmail);
+    User getUser(String userEmail);
 
-    public void save(User user);
+    void save(User user);
 }

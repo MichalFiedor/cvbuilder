@@ -9,10 +9,10 @@
     <title>Sign Up Form by Colorlib</title>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="<c:url value="/colorlib-regform-7/css/style.css" />">
+    <link href="/colorlib-regform-7/css/style.css">
 </head>
 <section class="signup">
     <div class="container">
@@ -34,11 +34,6 @@
                         <label for="pass"><i class="zmdi zmdi-lock"></i></label>
                         <form:input type="password" id="pass" placeholder="Password" path="password"/>
                     </div>
-
-<%--                    <div class="form-group">--%>
-<%--                        <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>--%>
-<%--                        <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>--%>
-<%--                    </div>--%>
                     <div class="form-group form-button">
                         <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
                     </div>
