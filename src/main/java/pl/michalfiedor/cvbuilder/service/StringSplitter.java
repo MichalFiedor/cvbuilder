@@ -4,7 +4,7 @@ import org.davidmoten.text.utils.WordWrap;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StringSplitter implements TextService{
+public class StringSplitter {
 
     public static String [] splitStringByLine(String text, int length){
         String wrappedText = WordWrap.from(text)

@@ -24,9 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/pdf")
 public class PdfController {
-    private final IUserService userService;
+    private final UserService userService;
     private final PdfService pdfService;
-    private final CvService cvService;
+    private final CvServiceImpl cvService;
 
     @GetMapping("/print")
     public String createPdf(HttpSession session, Model model, Principal principal) throws IOException {

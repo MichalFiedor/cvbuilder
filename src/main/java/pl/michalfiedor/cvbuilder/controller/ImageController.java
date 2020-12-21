@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.michalfiedor.cvbuilder.exception.InvalidFileExtensionException;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.repository.CvRepository;
 import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.validator.FileValidator;
 
@@ -17,8 +16,6 @@ import pl.michalfiedor.cvbuilder.validator.FileValidator;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import javax.validation.constraints.Pattern;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,10 +26,10 @@ import java.util.Set;
 @RequestMapping("/image")
 @RequiredArgsConstructor
 public class ImageController {
-    private final IUserService userService;
-    private final IImageService imageService;
+    private final UserService userService;
+    private final ImageService imageService;
     private final Validator validator;
-    private final ICvService cvService;
+    private final CvService cvService;
     private final FileValidator fileValidator;
 
     @GetMapping("/show")

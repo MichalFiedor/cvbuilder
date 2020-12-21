@@ -17,8 +17,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/experience")
 public class ExperienceController {
-    private final ICvService cvService;
-    private final IExperienceService experienceService;
+    private final CvService cvService;
+    private final ExperienceService experienceService;
     private final ErrorGenerator errorGenerator;
 
     @GetMapping("/show")

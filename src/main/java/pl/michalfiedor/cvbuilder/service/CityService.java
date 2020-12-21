@@ -1,22 +1,10 @@
 package pl.michalfiedor.cvbuilder.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.model.City;
-import pl.michalfiedor.cvbuilder.repository.CityRepository;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class CityService implements ICityService {
-    private final CityRepository cityRepository;
-
-    public List<City> getCities(){
-        return cityRepository.findAll();
-    }
-
-    public City findById(long id){
-        return cityRepository.findById(id).orElseThrow();
-    }
+public interface CityService {
+    List<City> getCities();
+    City findById(long id);
 }

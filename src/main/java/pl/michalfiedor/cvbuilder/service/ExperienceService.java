@@ -1,28 +1,14 @@
 package pl.michalfiedor.cvbuilder.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.model.Experience;
-import pl.michalfiedor.cvbuilder.repository.ExperienceRepository;
 
-@Service
-@RequiredArgsConstructor
-public class ExperienceService implements IExperienceService{
-    private final ExperienceRepository experienceRepository;
+public interface ExperienceService {
 
-    public Experience findById(long id) {
-        return experienceRepository.findById(id).orElseThrow();
-    }
+    Experience findById(long id);
 
-    public void save(Experience experience) {
-        experienceRepository.save(experience);
-    }
+    void save(Experience experience);
 
-    public void delete(Experience experience) {
-        experienceRepository.delete(experience);
-    }
+    void delete(Experience experience);
 
-    public boolean checkIfExist(long id) {
-        return experienceRepository.existsById(id);
-    }
+    boolean checkIfExist(long id);
 }

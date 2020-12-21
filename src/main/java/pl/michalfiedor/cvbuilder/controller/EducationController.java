@@ -20,11 +20,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/education")
 public class EducationController {
-    private final IUniversityService universityService;
-    private final ICityService cityService;
-    private final IEducationDetailsService educationDetailsService;
+    private final UniversityService universityService;
+    private final CityService cityService;
+    private final EducationDetailsService educationDetailsService;
     private final Validator validator;
-    private final ICvService cvService;
+    private final CvService cvService;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){

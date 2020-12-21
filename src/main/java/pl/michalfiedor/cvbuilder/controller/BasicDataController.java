@@ -24,9 +24,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/basicdata")
 public class BasicDataController {
-    private final ICityService cityService;
-    private final IUserService userService;
-    private final ICvService cvService;
+    private final CityService cityService;
+    private final UserService userService;
+    private final CvService cvService;
     private final Validator validator;
 
     @GetMapping("/show")

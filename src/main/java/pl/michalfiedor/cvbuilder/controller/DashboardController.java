@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.michalfiedor.cvbuilder.model.Cv;
-import pl.michalfiedor.cvbuilder.service.ICvService;
+import pl.michalfiedor.cvbuilder.service.CvService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final ICvService cvService;
+    private final CvService cvService;
 
     @GetMapping("/show")
     public String showDashboard(Model model){
