@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ErrorGenerator {
+public class ErrorGeneratorServiceImpl {
 
     public Map<String, String> generateObjectErrors(BindingResult result){
         Map<String, String> fieldErrorMap = new HashMap<>();
