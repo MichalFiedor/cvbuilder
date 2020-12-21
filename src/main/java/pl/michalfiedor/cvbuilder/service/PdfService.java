@@ -1,14 +1,11 @@
 package pl.michalfiedor.cvbuilder.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.davidmoten.text.utils.WordWrap;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Text;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.EducationDetails;
 import pl.michalfiedor.cvbuilder.model.Experience;
@@ -32,7 +29,7 @@ public class PdfService {
     public void addAboutMeToPdfSheet(Cv cv, PDDocument pdDocument, PDPage page) {
 
         PDPageContentStream contentStream = getContentStream(pdDocument, page);
-        String lines[]= TextService.splitStringByLine(cv.getAboutMe(), 50);
+        String lines[]= StringSplitter.splitStringByLine(cv.getAboutMe(), 50);
         try {
             contentStream.beginText();
             contentStream.newLineAtOffset(56.7f, 610f);
@@ -97,7 +94,7 @@ public class PdfService {
             contentStream.newLineAtOffset(245.8f, 610f);
             for (Experience experience : experiences) {
 
-                String lines[] = TextService.splitStringByLine(experience.getDescription(), 85);
+                String lines[] = StringSplitter.splitStringByLine(experience.getDescription(), 85);
                 String workingPeriod = experience.getStart() + " - " + experience.getEnd();
                 PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
                         experience.getPosition());
@@ -130,7 +127,7 @@ public class PdfService {
             contentStream.beginText();
             contentStream.newLineAtOffset(245.8f, 415f);
             for (EducationDetails educationDetails : educationDetailsList) {
-                String lines[]=TextService.splitStringByLine(educationDetails.getDegree(), 85);
+                String lines[]= StringSplitter.splitStringByLine(educationDetails.getDegree(), 85);
                 String studyPeriod = educationDetails.getStart() + " - " + educationDetails.getEnd();
                 PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
                         educationDetails.getUniversity().getName());

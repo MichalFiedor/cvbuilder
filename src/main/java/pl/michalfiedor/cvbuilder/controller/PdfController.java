@@ -1,7 +1,6 @@
 package pl.michalfiedor.cvbuilder.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -10,9 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.PdfService;
-import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.service.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,7 +26,7 @@ import java.util.List;
 public class PdfController {
     private final UserService userService;
     private final PdfService pdfService;
-    private final CvService cvService;
+    private final CvServiceImpl cvService;
 
     @GetMapping("/print")
     public String createPdf(HttpSession session, Model model, Principal principal) throws IOException {

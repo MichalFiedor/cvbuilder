@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 @Entity
 @Getter
 @Setter
-@IsAfterStartDate
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

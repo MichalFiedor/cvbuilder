@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.michalfiedor.cvbuilder.exception.UserAlreadyExistException;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.service.MyUserDetailsService;
-import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.service.UserServiceImpl;
 
 import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final MyUserDetailsService userDetailsService;
 
     @GetMapping("/registration")

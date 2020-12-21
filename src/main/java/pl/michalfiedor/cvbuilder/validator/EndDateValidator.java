@@ -1,7 +1,7 @@
 package pl.michalfiedor.cvbuilder.validator;
 
 import pl.michalfiedor.cvbuilder.model.Experience;
-import pl.michalfiedor.cvbuilder.service.DateService;
+import pl.michalfiedor.cvbuilder.service.DateServiceImpl;
 import pl.michalfiedor.cvbuilder.validator.annotation.IsAfterStartDate;
 
 import javax.validation.ConstraintValidator;
@@ -16,7 +16,7 @@ public class EndDateValidator implements ConstraintValidator<IsAfterStartDate, E
 
     @Override
     public boolean isValid(Experience experience, ConstraintValidatorContext constraintValidatorContext) {
-        DateService dateService = new DateService();
+        DateServiceImpl dateService = new DateServiceImpl();
         return dateService.isStartBeforeEndDate(experience);
     }
 }

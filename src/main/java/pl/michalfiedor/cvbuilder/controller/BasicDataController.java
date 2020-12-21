@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.service.CityService;
-import pl.michalfiedor.cvbuilder.service.CvService;
-import pl.michalfiedor.cvbuilder.service.UserService;
+import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 
 import javax.servlet.http.HttpSession;
@@ -59,6 +57,7 @@ public class BasicDataController {
     public List<City> getCitiesList(){
         return cityService.getCities();
     }
+
     @ModelAttribute("userEmail")
     public String getUserEmail(Principal principal){
         return principal.getName();
