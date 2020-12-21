@@ -19,7 +19,7 @@ import java.util.Map;
 public class ExperienceController {
     private final CvService cvService;
     private final ExperienceService experienceService;
-    private final ErrorGenerator errorGenerator;
+    private final ErrorGeneratorServiceImpl errorGenerator;
 
     @GetMapping("/show")
     public String showExperienceFormPage(Model model, HttpSession session){

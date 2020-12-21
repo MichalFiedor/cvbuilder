@@ -4,6 +4,6 @@ import org.springframework.validation.BindingResult;
 
 import java.util.Map;
 
-public interface IErrorGenerator {
+public interface ErrorGeneratorService {
     Map<String, String> generateObjectErrors(BindingResult result);
 }

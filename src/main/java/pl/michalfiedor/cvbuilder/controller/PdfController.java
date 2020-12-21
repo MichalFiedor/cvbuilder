@@ -25,7 +25,6 @@ import java.util.List;
 @RequestMapping("/pdf")
 public class PdfController {
     private final UserService userService;
-    private final PdfService pdfService;
     private final CvServiceImpl cvService;
 
     @GetMapping("/print")
@@ -44,14 +43,16 @@ public class PdfController {
         cvService.save(cv);
         PDDocument pdDocument = PDDocument.load(new File("cvTemplate.pdf"));
         PDPage page = pdDocument.getPage(0);
-        pdfService.addAboutMeToPdfSheet(cv, pdDocument, page);
-        pdfService.addBasicDataToPdfSheet(cv, pdDocument, page);
-        pdfService.addFirstAndLastNameToPdfSheet(cv, pdDocument, page);
-        pdfService.addExperienceToPdfSheet(cv, pdDocument, page);
-        pdfService.addEducationToPdfSheet(cv, pdDocument, page);
-        pdfService.addPhotoToPdfSheet(cv, pdDocument, page);
-        pdDocument.save(filePath.toString());
-        pdDocument.close();
+        PdfServiceImpl pdfService = new PdfServiceImpl.Builder(pdDocument, cv, page)
+                .addAboutMeToPdfSheet()
+                .addBasicDataToPdfSheet()
+                .addFirstAndLastNameToPdfSheet()
+                .addExperienceToPdfSheet()
+                .addEducationToPdfSheet()
+                .addPhotoToPdfSheet()
+                .build();
+        pdfService.getPdDocument().save(filePath.toString());
+        pdfService.getPdDocument().close();
         model.addAttribute("cvId", cv.getId());
         return "dashboard";
     }
@@ -64,7 +65,6 @@ public class PdfController {
             response.setContentType("application/pdf");
             response.addHeader("Content-Disposition", "attachment; filename=" + cv.getCvFileName());
             try {
-                InputStream in = new DataInputStream(new FileInputStream(cv.getCvPath()));
                 Files.copy(file, response.getOutputStream());
                 response.getOutputStream().flush();
             } catch (IOException e) {
