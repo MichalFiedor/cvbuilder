@@ -11,7 +11,6 @@ public class EndDateValidator implements ConstraintValidator<IsAfterStartDate, E
 
     @Override
     public void initialize(IsAfterStartDate constraintAnnotation) {
-
     }
 
     @Override

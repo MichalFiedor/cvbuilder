@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.michalfiedor.cvbuilder.exception.UserAlreadyExistException;
 import pl.michalfiedor.cvbuilder.model.User;
-import pl.michalfiedor.cvbuilder.service.MyUserDetailsService;
+import pl.michalfiedor.cvbuilder.service.SpringUserDetailsService;
 import pl.michalfiedor.cvbuilder.service.UserServiceImpl;
 
 import javax.validation.Valid;
@@ -17,10 +17,10 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class RegistrationController {
     private final UserServiceImpl userService;
-    private final MyUserDetailsService userDetailsService;
+    private final SpringUserDetailsService userDetailsService;
 
     @GetMapping("/registration")
-    public String showIndexPage(Model model){
+    public String showRegistrationPage(Model model){
         model.addAttribute("user", new User());
         return "registrationPage";
     }

@@ -1,6 +1,7 @@
 package pl.michalfiedor.cvbuilder.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.exception.UserAlreadyExistException;
 import pl.michalfiedor.cvbuilder.model.Role;
@@ -12,6 +13,7 @@ import pl.michalfiedor.cvbuilder.repository.UserRepository;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     public void registerNewUserAccount(User user) throws  UserAlreadyExistException{
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
         }
         Role role = roleService.findRoleByName("ROLE_USER");
         user.addRole(role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

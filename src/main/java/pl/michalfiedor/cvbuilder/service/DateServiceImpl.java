@@ -10,7 +10,12 @@ import java.time.format.DateTimeFormatter;
 public class DateServiceImpl implements DateService {
 
     public boolean isStartBeforeEndDate(Experience experience){
-        YearMonth start = parseStringToYearMonth(experience.getStart());
+        YearMonth start;
+        if(experience.getStart().length()==0){
+            return false;
+        } else {
+            start= parseStringToYearMonth(experience.getStart());
+        }
         YearMonth end;
         if(experience.getEnd().length()==0 || experience.getEnd().equals("Still")){
             return true;

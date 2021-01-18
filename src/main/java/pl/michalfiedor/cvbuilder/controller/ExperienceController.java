@@ -11,7 +11,6 @@ import pl.michalfiedor.cvbuilder.service.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,15 +18,12 @@ import java.util.Map;
 public class ExperienceController {
     private final CvService cvService;
     private final ExperienceService experienceService;
-    private final ErrorGeneratorServiceImpl errorGenerator;
 
     @GetMapping("/show")
     public String showExperienceFormPage(Model model, HttpSession session){
         model.addAttribute("experience", new Experience());
         getExperiencesList(session, model);
-        if(session.getAttribute("showNextButtonExperience")!=null){
-            model.addAttribute("showNextButtonExperience", true);
-        }
+        experienceService.showNextPageButton(session, model);
         return "experienceForm";
     }
 
@@ -35,19 +31,14 @@ public class ExperienceController {
     public String handleExperienceForm(@Valid Experience experience, BindingResult result, Model model,
                                        HttpSession session){
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        Map<String, String> errors = errorGenerator.generateObjectErrors(result);
-        if(errors.containsKey("isAfterStartDate")){
-            model.addAttribute("endDateError", errors.get("isAfterStartDate"));
-        }
+        experienceService.checkErrors(result, model);
         if(result.hasErrors()){
             if(userCv.getExperiences().size()>0){
                 getExperiencesList(session, model);
             }
             return "experienceForm";
         }
-        if(experience.getEnd().length()==0){
-            experience.setEnd("Still");
-        }
+        experienceService.setEndDateAsAStill(experience);
         experienceService.save(experience);
         userCv.addExperienceToCollection(experience);
         cvService.save(userCv);
@@ -68,9 +59,7 @@ public class ExperienceController {
             return "experienceEditForm";
         }
         if(experienceService.checkIfExist(experience.getId())){
-            if(experience.getEnd().length()==0){
-                experience.setEnd("still");
-            }
+            experienceService.setEndDateAsAStill(experience);
             experienceService.save(experience);
         }
         return "redirect:/experience/show";

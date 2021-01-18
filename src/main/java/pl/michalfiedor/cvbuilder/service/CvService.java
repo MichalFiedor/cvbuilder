@@ -17,4 +17,5 @@ public interface CvService {
     void delete(Cv cv);
 
     void deleteCvFromDataBaseAndCvFile(long id);
+
 }

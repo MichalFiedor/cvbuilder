@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @Primary
-public class MyUserDetailsService implements UserDetailsService {
+public class SpringUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
