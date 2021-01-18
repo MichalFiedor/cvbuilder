@@ -65,10 +65,7 @@ public class EducationController {
         }
 
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        if(educationDetails.getEnd().length()==0){
-            educationDetails.setEnd("Still");
-        }
-
+        educationDetailsService.setEndDateAsAStill(educationDetails);
         educationDetailsService.save(educationDetails);
         userCv.addEducationDetailToCollection(educationDetails);
         cvService.save(userCv);
@@ -79,7 +76,6 @@ public class EducationController {
 
     @GetMapping("/edit/{id}")
     public String editFormEducation(@PathVariable long id, Model model){
-
         EducationDetails educationDetails = educationDetailsService.findById(id);
         model.addAttribute("educationDetails", educationDetails);
         return "experienceEditForm";
@@ -95,7 +91,4 @@ public class EducationController {
     public List<City> getCitiesList(){
         return cityService.getCities();
     }
-
-
-
 }

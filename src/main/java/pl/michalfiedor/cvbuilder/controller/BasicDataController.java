@@ -26,30 +26,23 @@ import java.util.Set;
 public class BasicDataController {
     private final CityService cityService;
     private final UserService userService;
-    private final CvService cvService;
+    private final BasicDataService basicDataService;
     private final Validator validator;
 
     @GetMapping("/show")
-    public String showFormFirsPage(Model model){
+    public String showFormForBasicData(Model model){
         model.addAttribute("cv", new Cv());
         return "basicDataForm";
     }
 
     @PostMapping("/add")
-    public String handleFirstPageForm(@Validated({BasicDataValidationGroup.class}) Cv cv,
+    public String handleBasicDataForm(@Validated({BasicDataValidationGroup.class}) Cv cv,
                                       BindingResult result, Principal principal, HttpSession session){
         Set<ConstraintViolation<Cv>> violations = validator.validate(cv, BasicDataValidationGroup.class);
         if(!violations.isEmpty()){
             return "basicDataForm";
         }
-
-        User user = userService.getUser(principal.getName());
-        if(user!=null && cv!=null) {
-            cvService.save(cv);
-            session.setAttribute("cvId", cv.getId());
-            user.addCv(cv);
-            userService.save(user);
-        }
+        basicDataService.saveBasicData(cv, session, principal);
         return "redirect:/aboutme/show";
     }
 

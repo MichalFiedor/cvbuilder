@@ -66,9 +66,7 @@
                         <p>End date (If still, leave empty)</p>
                         <label for="endDate"><i class="zmdi zmdi-account material-icons-name"></i></label>
                         <form:input type="month" id="endDate" placeholder="Since" path="end" value="${null}"/>
-                        <c:if test="${not empty isAfterStartDate}">
                                 <p>${endDateError}</p>
-                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="description"><i class="zmdi zmdi-account material-icons-name"></i></label>

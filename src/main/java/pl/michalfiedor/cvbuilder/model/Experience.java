@@ -2,15 +2,18 @@ package pl.michalfiedor.cvbuilder.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.michalfiedor.cvbuilder.validator.EndDateValidator;
 import pl.michalfiedor.cvbuilder.validator.annotation.IsAfterStartDate;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import javax.validation.constraints.*;
 
 
 @Entity
 @Getter
 @Setter
+@IsAfterStartDate
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

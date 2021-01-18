@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
+import pl.michalfiedor.cvbuilder.service.AboutMeService;
 import pl.michalfiedor.cvbuilder.service.CvService;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 
@@ -20,27 +21,23 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/aboutme")
 public class AboutMeController {
-
-    private final CvService cvService;
+    private final AboutMeService aboutMeService;
     private final Validator validator;
 
     @GetMapping("/show")
-    public String showFormSecondPage(Model model){
+    public String showAboutMeForm(Model model){
         model.addAttribute("cv", new Cv());
         return "aboutMeForm";
     }
 
     @PostMapping("/add")
-    public String handleSecondPageForm(@Validated({AboutMeValidationGroup.class}) Cv cv,
+    public String handleAboutMeForm(@Validated({AboutMeValidationGroup.class}) Cv cv,
                                        BindingResult result, Principal principal, HttpSession session){
         Set<ConstraintViolation<Cv>> violations = validator.validate(cv, AboutMeValidationGroup.class);
         if(!violations.isEmpty()){
             return "aboutMeForm";
         }
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        userCv.setAboutMe(cv.getAboutMe());
-        cvService.save(userCv);
-
+        aboutMeService.saveAboutMe(cv, session);
         return "redirect:/experience/show";
     }
 
