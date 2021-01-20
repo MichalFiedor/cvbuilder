@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
-import pl.michalfiedor.cvbuilder.validator.annotation.ValidEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -54,12 +53,6 @@ public class Cv {
     @OneToMany
     @JoinColumn(name = "cv_id")
     private List<EducationDetails> educationDetailsList;
-    @ManyToMany
-    @JoinTable(name = "itToolId_CvId")
-    private List<ItTool> itTools;
-    @ManyToMany
-    @JoinTable(name = "languageId_CvId")
-    private List<Language> languages;
     private String imagePath;
     private String cvPath;
     private String cvFileName;

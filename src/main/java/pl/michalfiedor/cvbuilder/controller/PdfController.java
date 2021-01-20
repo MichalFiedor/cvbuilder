@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.service.*;
+import pl.michalfiedor.cvbuilder.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequestMapping("/pdf")
 public class PdfController {
     private final UserService userService;
-    private final CvServiceImpl cvService;
+    private final CvService cvService;
 
     @GetMapping("/print")
     public String createPdf(HttpSession session, Model model, Principal principal) throws IOException {
@@ -43,7 +44,7 @@ public class PdfController {
         cvService.save(cv);
         PDDocument pdDocument = PDDocument.load(new File("cvTemplate.pdf"));
         PDPage page = pdDocument.getPage(0);
-        PdfServiceImpl pdfService = new PdfServiceImpl.Builder(pdDocument, cv, page)
+        PdfService pdfService = new PdfService.Builder(pdDocument, cv, page)
                 .addAboutMeToPdfSheet()
                 .addBasicDataToPdfSheet()
                 .addFirstAndLastNameToPdfSheet()

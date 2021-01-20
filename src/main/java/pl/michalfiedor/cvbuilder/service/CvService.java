@@ -1,21 +1,53 @@
 package pl.michalfiedor.cvbuilder.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.model.Cv;
+import pl.michalfiedor.cvbuilder.repository.CvRepository;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
-public interface CvService {
-    Cv getCvById(long id);
 
-    long getCvIdFromSession(HttpSession session);
+//@Scope(
+//        value = WebApplicationContext.SCOPE_SESSION,
+//        proxyMode = ScopedProxyMode.TARGET_CLASS
+//)
+@Service
+@RequiredArgsConstructor
+public class CvService {
+    private final CvRepository cvRepository;
 
-    void save(Cv cv);
+    public Cv getCvById(long id) {
+        return cvRepository.findById(id).orElseThrow();
+    }
 
-    List<Cv> findAll();
+    public long getCvIdFromSession(HttpSession session){
+        return (long)session.getAttribute("cvId");
+    }
 
-    void delete(Cv cv);
+    public void save(Cv cv){
+        cvRepository.save(cv);
+    }
 
-    void deleteCvFromDataBaseAndCvFile(long id);
+    public List<Cv> findAll() {
+        return cvRepository.findAll();
+    }
 
+    public void delete(Cv cv){
+        cvRepository.delete(cv);
+    }
+
+    public void deleteCvFromDataBaseAndCvFile(long id){
+        Cv cv = cvRepository.findById(id).orElseThrow();
+        try {
+            Files.delete(Paths.get(cv.getCvPath()));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        cvRepository.delete(cv);
+    }
 }

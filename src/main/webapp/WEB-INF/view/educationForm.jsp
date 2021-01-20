@@ -94,6 +94,7 @@
                         <c:if test="${not empty invalidEndDate}">
                             <p>${invalidEndDate}</p>
                         </c:if>
+                                                        <p>${endDateError}</p>
                     </div>
                     <input type="hidden" name="cityId" value="${selectedCity.id}">
                 </div>

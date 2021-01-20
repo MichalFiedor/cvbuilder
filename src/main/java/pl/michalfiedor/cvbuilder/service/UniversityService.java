@@ -1,10 +1,19 @@
 package pl.michalfiedor.cvbuilder.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.model.University;
+import pl.michalfiedor.cvbuilder.repository.UniversityRepository;
 
 import java.util.List;
 
-public interface UniversityService {
+@Service
+@RequiredArgsConstructor
+public class UniversityService {
+    private final UniversityRepository universityRepository;
 
-    List<University> findAllByCityId(long id);
+    public List<University> findAllByCityId(long id){
+        return universityRepository.findAllByCityId(id);
+    }
+
 }
