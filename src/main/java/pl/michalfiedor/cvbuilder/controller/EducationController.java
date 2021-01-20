@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.*;
 import pl.michalfiedor.cvbuilder.service.*;
+import pl.michalfiedor.cvbuilder.service.UniversityService;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
 
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ public class EducationController {
     private final EducationDetailsService educationDetailsService;
     private final Validator validator;
     private final CvService cvService;
+    private final ErrorsCheckerForEndDateValidation errorsCheckerForEndDateValidation;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
@@ -50,12 +52,12 @@ public class EducationController {
     }
 
     @PostMapping("/add")
-    public String addEducation(@RequestParam long cityId, @Validated({EducationDetailValidationGroup.class}) EducationDetails educationDetails,
+    public String handleEducationForm(@RequestParam long cityId, @Validated({EducationDetailValidationGroup.class}) EducationDetails educationDetails,
                                BindingResult result, HttpSession session, Model model){
 
         Set<ConstraintViolation<EducationDetails>> violations = validator.validate(
                 educationDetails, EducationDetailValidationGroup.class);
-
+        errorsCheckerForEndDateValidation.checkErrors(result, model,"IsAfterStartDateForEducation");
         if(!violations.isEmpty()){
             List<University> universitiesList = universityService.findAllByCityId(cityId);
             model.addAttribute("selectedCity", cityService.findById(cityId));

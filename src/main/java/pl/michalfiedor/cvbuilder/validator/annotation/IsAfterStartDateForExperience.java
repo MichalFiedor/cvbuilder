@@ -1,7 +1,6 @@
 package pl.michalfiedor.cvbuilder.validator.annotation;
 
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
-import pl.michalfiedor.cvbuilder.validator.EndDateValidator;
+import pl.michalfiedor.cvbuilder.validator.EndDateValidatorForExperience;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,8 +11,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EndDateValidator.class)
-public @interface IsAfterStartDate {
+@Constraint(validatedBy = EndDateValidatorForExperience.class)
+
+public @interface IsAfterStartDateForExperience {
     String message() default "End date must be past start date";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

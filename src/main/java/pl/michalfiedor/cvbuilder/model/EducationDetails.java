@@ -3,6 +3,8 @@ package pl.michalfiedor.cvbuilder.model;
 import lombok.Getter;
 import lombok.Setter;
 import pl.michalfiedor.cvbuilder.validationGroup.EducationDetailValidationGroup;
+import pl.michalfiedor.cvbuilder.validator.annotation.IsAfterStartDateForEducation;
+import pl.michalfiedor.cvbuilder.validator.annotation.IsAfterStartDateForExperience;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
+@IsAfterStartDateForEducation
 public class EducationDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

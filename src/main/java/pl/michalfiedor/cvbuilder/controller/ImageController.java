@@ -10,6 +10,7 @@ import pl.michalfiedor.cvbuilder.exception.InvalidFileExtensionException;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.service.*;
+import pl.michalfiedor.cvbuilder.service.UserService;
 import pl.michalfiedor.cvbuilder.validator.FileValidator;
 
 

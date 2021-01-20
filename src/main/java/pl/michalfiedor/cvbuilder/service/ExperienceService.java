@@ -1,25 +1,45 @@
 package pl.michalfiedor.cvbuilder.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import pl.michalfiedor.cvbuilder.model.Experience;
+import pl.michalfiedor.cvbuilder.repository.ExperienceRepository;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
-public interface ExperienceService {
+@Service
+@RequiredArgsConstructor
+public class ExperienceService {
+    private final ExperienceRepository experienceRepository;
 
-    Experience findById(long id);
+    public Experience findById(long id) {
+        return experienceRepository.findById(id).orElseThrow();
+    }
 
-    void save(Experience experience);
+    public void save(Experience experience) {
+        experienceRepository.save(experience);
+    }
 
-    void delete(Experience experience);
+    public void delete(Experience experience) {
+        experienceRepository.delete(experience);
+    }
 
-    boolean checkIfExist(long id);
+    public boolean checkIfExist(long id) {
+        return experienceRepository.existsById(id);
+    }
 
-    void showNextPageButton(HttpSession session, Model model);
+    public void showNextPageButton(HttpSession session, Model model) {
+        if(session.getAttribute("showNextButtonExperience")!=null){
+            model.addAttribute("showNextButtonExperience", true);
+        }
+    }
 
-    void checkErrors(BindingResult result, Model model);
-
-    void setEndDateAsAStill(Experience experience);
-
+    public void setEndDateAsAStill(Experience experience) {
+        if(experience.getEnd().length()==0){
+            experience.setEnd("Still");
+        }
+    }
 }

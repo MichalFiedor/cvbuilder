@@ -18,6 +18,7 @@ import javax.validation.Valid;
 public class ExperienceController {
     private final CvService cvService;
     private final ExperienceService experienceService;
+    private final ErrorsCheckerForEndDateValidation errorsCheckerForEndDateValidation;
 
     @GetMapping("/show")
     public String showExperienceFormPage(Model model, HttpSession session){
@@ -31,7 +32,7 @@ public class ExperienceController {
     public String handleExperienceForm(@Valid Experience experience, BindingResult result, Model model,
                                        HttpSession session){
         Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        experienceService.checkErrors(result, model);
+        errorsCheckerForEndDateValidation.checkErrors(result, model, "IsAfterStartDateForExperience");
         if(result.hasErrors()){
             if(userCv.getExperiences().size()>0){
                 getExperiencesList(session, model);

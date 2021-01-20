@@ -9,8 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.City;
 import pl.michalfiedor.cvbuilder.model.Cv;
-import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.service.*;
+import pl.michalfiedor.cvbuilder.service.UserService;
 import pl.michalfiedor.cvbuilder.validationGroup.BasicDataValidationGroup;
 
 import javax.servlet.http.HttpSession;

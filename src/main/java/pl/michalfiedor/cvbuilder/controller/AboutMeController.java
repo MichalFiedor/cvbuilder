@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.service.AboutMeService;
-import pl.michalfiedor.cvbuilder.service.CvService;
 import pl.michalfiedor.cvbuilder.validationGroup.AboutMeValidationGroup;
 
 import javax.servlet.http.HttpSession;
