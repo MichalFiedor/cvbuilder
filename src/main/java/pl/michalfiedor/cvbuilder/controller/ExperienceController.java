@@ -16,33 +16,27 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/experience")
 public class ExperienceController {
-    private final CvService cvService;
     private final ExperienceService experienceService;
     private final ErrorsCheckerForEndDateValidation errorsCheckerForEndDateValidation;
+    private final NextPageButtonService nextPageButtonService;
 
     @GetMapping("/show")
     public String showExperienceFormPage(Model model, HttpSession session){
         model.addAttribute("experience", new Experience());
-        getExperiencesList(session, model);
-        experienceService.showNextPageButton(session, model);
+        experienceService.passExperiencesListToView(session, model);
+        nextPageButtonService.showNextPageButtonOnPage(session, model,"showNextButtonExperience");
         return "experienceForm";
     }
 
     @PostMapping("/add")
     public String handleExperienceForm(@Valid Experience experience, BindingResult result, Model model,
                                        HttpSession session){
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
         errorsCheckerForEndDateValidation.checkErrors(result, model, "IsAfterStartDateForExperience");
         if(result.hasErrors()){
-            if(userCv.getExperiences().size()>0){
-                getExperiencesList(session, model);
-            }
+            experienceService.passExperiencesListToView(session, model);
             return "experienceForm";
         }
-        experienceService.setEndDateAsAStill(experience);
-        experienceService.save(experience);
-        userCv.addExperienceToCollection(experience);
-        cvService.save(userCv);
+        experienceService.addExperienceToCv(session, experience);
         session.setAttribute("showNextButtonExperience", true);
         return "redirect:/experience/show";
     }
@@ -59,10 +53,7 @@ public class ExperienceController {
         if (result.hasErrors()){
             return "experienceEditForm";
         }
-        if(experienceService.checkIfExist(experience.getId())){
-            experienceService.setEndDateAsAStill(experience);
-            experienceService.save(experience);
-        }
+        experienceService.saveEdited(experience);
         return "redirect:/experience/show";
     }
 
@@ -71,10 +62,5 @@ public class ExperienceController {
         Experience expToDelete = experienceService.findById(id);
         experienceService.delete(expToDelete);
         return "redirect:/experience/show";
-    }
-
-    public void getExperiencesList(HttpSession session, Model model){
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        model.addAttribute("experiences", userCv.getExperiences());
     }
 }

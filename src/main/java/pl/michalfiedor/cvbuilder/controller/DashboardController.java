@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.service.CvService;
+import pl.michalfiedor.cvbuilder.service.DashboardService;
 
 import java.util.List;
 
@@ -14,20 +15,11 @@ import java.util.List;
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final CvService cvService;
+    private final DashboardService dashboardService;
 
     @GetMapping("/show")
     public String showDashboard(Model model){
-        List<Cv> cvs = cvService.findAll();
-        for(Cv cv : cvs){
-            if (cv.getCvPath()==null){
-                cvService.delete(cv);
-            }
-        }
-        cvs=cvService.findAll();
-        if(cvs.size()>0){
-            model.addAttribute("cvs", cvs);
-        }
+        dashboardService.showCvsList(model);
         return "dashboard";
     }
 }

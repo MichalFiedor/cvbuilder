@@ -12,7 +12,7 @@ import java.util.List;
 public class CityService {
     private final CityRepository cityRepository;
 
-    public List<City> getCities(){
+    public List<City> get(){
         return cityRepository.findAll();
     }
 

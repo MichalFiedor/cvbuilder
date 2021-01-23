@@ -31,7 +31,7 @@ public class RegistrationController {
             return "registrationPage";
         }
         try{
-            userService.registerNewUserAccount(user);
+            userService.registerNewAccount(user);
         } catch (UserAlreadyExistException userAlreadyExistException){
             model.addAttribute("emailFailed", true);
             return "registrationPage";

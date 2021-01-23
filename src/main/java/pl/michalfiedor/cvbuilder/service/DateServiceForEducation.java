@@ -10,26 +10,26 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class DateServiceForEducation {
 
-    public boolean isStartBeforeEndDate(EducationDetails educationDetails){
+    public boolean isStartBeforeEndDate(EducationDetails educationDetails) {
         YearMonth start;
-        if(educationDetails.getStart().length()==0){
+        if (educationDetails.getStart().length() == 0) {
             return false;
         } else {
-            start= parseStringToYearMonth(educationDetails.getStart());
+            start = parseStringToYearMonth(educationDetails.getStart());
         }
         YearMonth end;
-        if(educationDetails.getEnd().length()==0 || educationDetails.getEnd().equals("Still")){
+        if (educationDetails.getEnd().length() == 0 || educationDetails.getEnd().equals("Still")) {
             return true;
         } else {
-             end = parseStringToYearMonth(educationDetails.getEnd());
+            end = parseStringToYearMonth(educationDetails.getEnd());
         }
-        if(start.isBefore(end)){
+        if (start.isBefore(end)) {
             return true;
         }
         return false;
     }
 
-    private YearMonth parseStringToYearMonth(String date){
+    private YearMonth parseStringToYearMonth(String date) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM");
         return YearMonth.parse(date, dtf);
     }

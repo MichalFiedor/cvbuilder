@@ -42,13 +42,13 @@ public class BasicDataController {
         if(!violations.isEmpty()){
             return "basicDataForm";
         }
-        basicDataService.saveBasicData(cv, session, principal);
+        basicDataService.save(cv, session, principal);
         return "redirect:/aboutme/show";
     }
 
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
-        return cityService.getCities();
+        return cityService.get();
     }
 
     @ModelAttribute("userEmail")

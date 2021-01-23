@@ -11,8 +11,8 @@ import javax.servlet.http.HttpSession;
 public class AboutMeService {
     private final CvService cvService;
 
-    public void saveAboutMe(Cv cv, HttpSession session){
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
+    public void save(Cv cv, HttpSession session){
+        Cv userCv = cvService.getById(cvService.getCvIdFromSession(session));
         userCv.setAboutMe(cv.getAboutMe());
         cvService.save(userCv);
     }
