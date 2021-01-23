@@ -17,7 +17,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public void registerNewUserAccount(User user) throws  UserAlreadyExistException{
+    public void registerNewAccount(User user) throws  UserAlreadyExistException{
         if(emailExist(user.getEmail())){
             throw new UserAlreadyExistException("Account with email : +" + user.getEmail() + "already exists");
         }
@@ -27,7 +27,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getUser(String userEmail){
+    public User get(String userEmail){
         return userRepository.findByEmail(userEmail);
     }
 

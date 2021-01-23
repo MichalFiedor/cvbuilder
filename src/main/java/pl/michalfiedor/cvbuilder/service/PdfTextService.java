@@ -1,7 +1,5 @@
 package pl.michalfiedor.cvbuilder.service;
 
-import org.apache.pdfbox.contentstream.PDContentStream;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.springframework.stereotype.Component;

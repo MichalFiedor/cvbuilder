@@ -21,33 +21,22 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/education")
 public class EducationController {
-    private final UniversityService universityService;
     private final CityService cityService;
     private final EducationDetailsService educationDetailsService;
     private final Validator validator;
-    private final CvService cvService;
     private final ErrorsCheckerForEndDateValidation errorsCheckerForEndDateValidation;
+    private final NextPageButtonService nextPageButtonService;
 
     @GetMapping("/show")
     public String showEducationFormPage(Model model, HttpSession session){
-
-        educationDetailsService.getEducationList(session, model);
-        if(session.getAttribute("showNextButton")!=null){
-            model.addAttribute("showNextButton", true);
-        }
+        educationDetailsService.getEducationsList(session, model);
+        nextPageButtonService.showNextPageButtonOnPage(session, model, "showNextButton");
         return "educationForm";
     }
 
     @PostMapping("/university")
     public String showUniversityList(@RequestParam long cityId, Model model, HttpSession session){
-
-        session.removeAttribute("showNextButton");
-        List<University> universitiesList = universityService.findAllByCityId(cityId);
-        model.addAttribute("universitiesPerCity", universitiesList);
-        model.addAttribute("educationDetails", new EducationDetails());
-        model.addAttribute("selectedCity", cityService.findById(cityId));
-        educationDetailsService.getEducationList(session, model);
-
+        educationDetailsService.passUniversitiesListForChosenCity(session, cityId, model, true);
         return "educationForm";
     }
 
@@ -59,20 +48,11 @@ public class EducationController {
                 educationDetails, EducationDetailValidationGroup.class);
         errorsCheckerForEndDateValidation.checkErrors(result, model,"IsAfterStartDateForEducation");
         if(!violations.isEmpty()){
-            List<University> universitiesList = universityService.findAllByCityId(cityId);
-            model.addAttribute("selectedCity", cityService.findById(cityId));
-            model.addAttribute("universitiesPerCity", universitiesList);
-            educationDetailsService.getEducationList(session, model);
+            educationDetailsService.passUniversitiesListForChosenCity(session, cityId, model, false);
             return "educationForm";
         }
-
-        Cv userCv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        educationDetailsService.setEndDateAsAStill(educationDetails);
-        educationDetailsService.save(educationDetails);
-        userCv.addEducationDetailToCollection(educationDetails);
-        cvService.save(userCv);
+        educationDetailsService.addEducationToCv(session, educationDetails);
         session.setAttribute("showNextButton", true);
-
         return "redirect:/education/show";
     }
 
@@ -91,6 +71,6 @@ public class EducationController {
 
     @ModelAttribute("cities")
     public List<City> getCitiesList(){
-        return cityService.getCities();
+        return cityService.get();
     }
 }

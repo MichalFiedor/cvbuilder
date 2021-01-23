@@ -2,6 +2,7 @@ package pl.michalfiedor.cvbuilder.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import pl.michalfiedor.cvbuilder.model.Cv;
 import pl.michalfiedor.cvbuilder.repository.CvRepository;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class CvService {
     private final CvRepository cvRepository;
 
-    public Cv getCvById(long id) {
+    public Cv getById(long id) {
         return cvRepository.findById(id).orElseThrow();
     }
 
@@ -49,5 +50,17 @@ public class CvService {
             exception.printStackTrace();
         }
         cvRepository.delete(cv);
+    }
+
+    public void deleteCvIfDoesNotFinished(Cv cv){
+        if (cv.getCvPath()==null){
+            cvRepository.delete(cv);
+        }
+    }
+
+    public void passCvsListToView(List<Cv> cvs, Model model){
+        if(cvs.size()>0){
+            model.addAttribute("cvs", cvs);
+        }
     }
 }

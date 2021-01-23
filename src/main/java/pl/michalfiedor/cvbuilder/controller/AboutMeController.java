@@ -36,7 +36,7 @@ public class AboutMeController {
         if(!violations.isEmpty()){
             return "aboutMeForm";
         }
-        aboutMeService.saveAboutMe(cv, session);
+        aboutMeService.save(cv, session);
         return "redirect:/experience/show";
     }
 

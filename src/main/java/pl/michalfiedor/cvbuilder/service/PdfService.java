@@ -1,196 +1,89 @@
 package pl.michalfiedor.cvbuilder.service;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Service;
 import pl.michalfiedor.cvbuilder.model.Cv;
-import pl.michalfiedor.cvbuilder.model.EducationDetails;
-import pl.michalfiedor.cvbuilder.model.Experience;
+import pl.michalfiedor.cvbuilder.model.PdfData;
+import pl.michalfiedor.cvbuilder.model.User;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-@Setter
-@Getter
 @Service
+@RequiredArgsConstructor
 public class PdfService {
-      PDDocument pdDocument;
+    private final CvService cvService;
 
-    public static class Builder{
-        private PDDocument pdDocument;
-        private Cv cv;
-        private PDPage page;
-
-        public Builder(PDDocument pdDocument, Cv cv, PDPage page){
-            this.pdDocument=pdDocument;
-            this.cv=cv;
-            this.page=page;
+    public PdfData createPdfData(User user, Cv cv){
+        PdfData pdfData = null;
+        try {
+            pdfData = PdfData.builder()
+                    .dirPath(Paths.get("user_id_" + user.getId()))
+                    .fileName("user_" + user.getId() + "_cv_" + cv.getId() + ".pdf")
+                    .pdDocument(PDDocument.load(new File("cvTemplate.pdf")))
+                    .build();
+            pdfData.setFilePath(pdfData.getDirPath().resolve(pdfData.getFileName()));
+            pdfData.setPage(pdfData.getPdDocument().getPage(0));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return pdfData;
 
-        public Builder addAboutMeToPdfSheet() {
+    }
 
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-            String lines[] = StringSplitter.splitStringByLine(this.cv.getAboutMe(), 50);
+    public void savePdfPathAndNameInCv(Cv cv, PdfData pdfData){
+        cv.setCvPath(pdfData.getFilePath().toAbsolutePath().toString());
+        cv.setCvFileName(pdfData.getFileName());
+        cvService.save(cv);
+    }
+
+    public void createDirectories(PdfData pdfData) {
+        if(!Files.exists(pdfData.getDirPath())){
             try {
-                contentStream.beginText();
-                contentStream.newLineAtOffset(56.7f, 610f);
-                contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
-                contentStream.setLeading(14.5f);
-                for (int i = 0; i < lines.length; i++) {
-                    contentStream.showText(lines[i]);
-                    contentStream.newLine();
-                }
-                contentStream.endText();
-                contentStream.close();
+                Files.createDirectories(pdfData.getDirPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return this;
         }
+    }
 
-        public Builder addBasicDataToPdfSheet() {
+    public void createCvPdf(PdfData pdfData, Cv cv){
+        PdfServiceBuilder pdfService = new PdfServiceBuilder.Builder(pdfData.getPdDocument(), cv, pdfData.getPage())
+                .addAboutMeToPdfSheet()
+                .addBasicDataToPdfSheet()
+                .addFirstAndLastNameToPdfSheet()
+                .addExperienceToPdfSheet()
+                .addEducationToPdfSheet()
+                .addPhotoToPdfSheet()
+                .build();
+        try {
+            pdfService.getPdDocument().save(pdfData.getFilePath().toString());
+            pdfService.getPdDocument().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-
-            String city = this.cv.getCity().getName();
-            String email = this.cv.getEmail();
-            String phoneNumber = this.cv.getPhoneNumber();
+    public void downloadPdf(Long id, HttpServletResponse response) throws FileNotFoundException {
+        Cv cv = cvService.getById(id);
+        Path file = Paths.get(cv.getCvPath());
+        if (Files.exists(file)) {
+            response.setContentType("application/pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=" + cv.getCvFileName());
             try {
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.TIMES_ROMAN, 9);
-                PdfTextService.addSingleText(contentStream, phoneNumber, 107.2f, 688.5f);
-                PdfTextService.addSingleText(contentStream, email, 135.2f, 0);
-                PdfTextService.addSingleText(contentStream, city, 201.5f, 0);
-                contentStream.endText();
-                contentStream.close();
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error writing file to output stream.");
             }
-            return this;
-        }
-
-        public Builder addFirstAndLastNameToPdfSheet() {
-
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-
-            String firstName = this.cv.getFirstName();
-            String lastName = this.cv.getLastName();
-            try {
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.TIMES_ROMAN, 25);
-                PdfTextService.addSingleText(contentStream, firstName, 220.1f, 712.4f);
-                PdfTextService.addSingleText(contentStream, lastName, 80.3f, 0);
-                contentStream.endText();
-                contentStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return this;
-        }
-
-        public Builder addExperienceToPdfSheet() {
-
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-            List<Experience> experiences = this.cv.getExperiences();
-
-            try {
-                contentStream.beginText();
-                contentStream.newLineAtOffset(245.8f, 610f);
-                for (Experience experience : experiences) {
-
-                    String lines[] = StringSplitter.splitStringByLine(experience.getDescription(), 85);
-                    String workingPeriod = experience.getStart() + " - " + experience.getEnd();
-                    PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
-                            experience.getPosition());
-                    PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD_ITALIC, 9f, 10.5f,
-                            experience.getCompanyName());
-                    PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 12.5f,
-                            workingPeriod);
-                    contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
-
-                    for (int i = 0; i < lines.length; i++) {
-                        contentStream.setLeading(10.5f);
-                        contentStream.showText(lines[i]);
-                        contentStream.newLine();
-                    }
-                    contentStream.newLine();
-                }
-                contentStream.endText();
-                contentStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return this;
-        }
-
-        public Builder addEducationToPdfSheet() {
-
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-            List<EducationDetails> educationDetailsList = cv.getEducationDetailsList();
-
-            try {
-                contentStream.beginText();
-                contentStream.newLineAtOffset(245.8f, 415f);
-                for (EducationDetails educationDetails : educationDetailsList) {
-                    String lines[] = StringSplitter.splitStringByLine(educationDetails.getDegree(), 85);
-                    String studyPeriod = educationDetails.getStart() + " - " + educationDetails.getEnd();
-                    PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_BOLD, 11f, 10.5f,
-                            educationDetails.getUniversity().getName());
-                    PdfTextService.addNewLineInMultilineText(contentStream, PDType1Font.TIMES_ROMAN, 7f, 12.5f,
-                            studyPeriod);
-                    contentStream.setFont(PDType1Font.TIMES_ROMAN, 8);
-                    for (int i = 0; i < lines.length; i++) {
-                        contentStream.setLeading(10.5f);
-                        contentStream.showText(lines[i]);
-                        contentStream.newLine();
-                    }
-                    contentStream.newLine();
-                }
-                contentStream.endText();
-                contentStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return this;
-        }
-
-        public Builder addPhotoToPdfSheet() {
-
-            PDPageContentStream contentStream = getContentStream(this.pdDocument, this.page);
-            String imgPath = this.cv.getImagePath();
-            try {
-                PDImageXObject pdImageXObject = PDImageXObject.createFromFile(imgPath, this.pdDocument);
-                float widthFactor = pdImageXObject.getWidth() / 70f;
-                float heightFactor = pdImageXObject.getHeight() / 90f;
-                contentStream.drawImage(pdImageXObject, 258, 735,
-                        pdImageXObject.getWidth() / widthFactor,
-                        pdImageXObject.getHeight() / heightFactor);
-                contentStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return this;
-        }
-
-        public PdfService build(){
-            PdfService pdfService = new PdfService();
-            pdfService.setPdDocument(this.pdDocument);
-            return pdfService;
-        }
-
-        private static PDPageContentStream getContentStream(PDDocument pdDocument, PDPage page) {
-            try {
-                return new PDPageContentStream(pdDocument, page,
-                        PDPageContentStream.AppendMode.APPEND, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+        }else {
+            throw new FileNotFoundException("File does not exist");
         }
     }
 }

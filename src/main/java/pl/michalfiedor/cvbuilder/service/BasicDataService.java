@@ -15,8 +15,8 @@ public class BasicDataService {
     private final CvService cvService;
     private final UserService userService;
 
-    public void saveBasicData(Cv cv, HttpSession session, Principal principal){
-        User user = userService.getUser(principal.getName());
+    public void save(Cv cv, HttpSession session, Principal principal){
+        User user = userService.get(principal.getName());
         if(user!=null && cv!=null) {
             cvService.save(cv);
             session.setAttribute("cvId", cv.getId());

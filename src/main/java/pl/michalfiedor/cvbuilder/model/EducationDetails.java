@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@IsAfterStartDateForEducation
 public class EducationDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.michalfiedor.cvbuilder.exception.InvalidFileExtensionException;
 import pl.michalfiedor.cvbuilder.model.Cv;
+import pl.michalfiedor.cvbuilder.model.ImageData;
 import pl.michalfiedor.cvbuilder.model.User;
 import pl.michalfiedor.cvbuilder.service.*;
 import pl.michalfiedor.cvbuilder.service.UserService;
@@ -42,29 +43,21 @@ public class ImageController {
     @PostMapping("/add")
     public String addImage(HttpSession session, MultipartFile image,
                            Model model, Principal principal) throws IOException {
-
         try {
             fileValidator.validateExtension(image);
         } catch (InvalidFileExtensionException e) {
             model.addAttribute("validationMessage", "Only jpg/jpeg and png files are accepted");
             return "imageForm";
         }
-
-        User user = userService.getUser(principal.getName());
         Set<ConstraintViolation<MultipartFile>> violations = validator.validate(image);
         if(!violations.isEmpty()){
             return "imageForm";
         }
-
-        Cv cv = cvService.getCvById(cvService.getCvIdFromSession(session));
-        String fileName = "userPhoto_id_" + user.getId();
-        String uploadDir = "user_id_" + user.getId();
-        String extension = FilenameUtils.getExtension(image.getOriginalFilename());
-        String imgPath = uploadDir + "/" + fileName + "." + extension;
-        Path filePath = Paths.get(imgPath);
-        cv.setImagePath(filePath.toAbsolutePath().toString());
-        cvService.save(cv);
-        imageService.saveImageFile(uploadDir, fileName, image, extension);
+        User user = userService.get(principal.getName());
+        ImageData imageData = imageService.createImageData(user, image);
+        Cv cv = cvService.getById(cvService.getCvIdFromSession(session));
+        imageService.saveImagePathInCv(imageData, cv);
+        imageService.saveImageFile(imageData, image);
         model.addAttribute("imgName", image.getOriginalFilename());
         model.addAttribute("imgPath", cv.getImagePath());
         return "imageForm";
